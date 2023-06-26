@@ -11,17 +11,18 @@ datasource db {
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  email         String          @unique
-  name          String?
-  phone         String?         @unique
-  password      String
-  role          Role            @default(USER)
-  orders        Order[]
-  ProductReview ProductReview[]
-  accounts      Account[]
-  UserSession   Session[]
-  products      Product[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  name           String?
+  phone          String?         @unique
+  email_verified Boolean         @default(false)
+  password       String
+  role           Role            @default(USER)
+  orders         Order[]
+  ProductReview  ProductReview[]
+  accounts       Account[]
+  UserSession    Session[]
+  products       Product[]
 }
 
 model Account {
@@ -72,7 +73,8 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model VerificationToken { 
+model VerificationToken {
+  id         Int      @id @default(autoincrement())
   identifier String
   token      String   @unique
   expires    DateTime

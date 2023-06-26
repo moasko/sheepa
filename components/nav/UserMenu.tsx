@@ -9,12 +9,12 @@ import { BsCodeSlash } from "react-icons/bs";
 
 import Link from "next/link";
 
-// import { signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 function UserMenu() {
 
-  // const { data } = useSession();
-  // const user = data?.user
+  const { data } = useSession();
+  const user = data?.user
 
   return (
     <Popover
@@ -50,19 +50,19 @@ function UserMenu() {
             </div>
           </div>
           <div className="border-t">
-            <Button className="p-3">
-              <div className="flex space-x-3 items-center p-2 rounded-md">
+            <button  className="p-2 border-none w-full hover:bg-red-200" onClick={() => signOut()}>
+              <div className="flex space-x-3 items-center p-2">
                 <MdOutlineLogout color="#555d67" size={20} />
-                <span className="text-[#555d67]">Déconnexion</span>
+                <span className="text-[#555d67] text-md">Déconnexion</span>
               </div>
-            </Button>
+            </button>
           </div>
         </Pane>
       }
     >
       <div className="flex items-center space-x-2 cursor-pointer">
-        <Avatar size={25} color={"orange"} name={"moasko"} />
-        <h2 className="font-semibold">{"moasko"}</h2>
+        <Avatar size={25} color={"orange"} name={user?.name} />
+        <h2 className="font-semibold">{user?.name}</h2>
         <FiChevronDown color="#555d67" />
       </div>
     </Popover>

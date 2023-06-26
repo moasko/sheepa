@@ -1,22 +1,42 @@
 "use client";
 
-import React, { useRef } from 'react';
+import React, { useRef,useEffect } from 'react';
 import GoogleSignInButton from '@/components/GoogleSignInButton';
 import { Divider } from 'antd';
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
+import { useRouter } from "next/navigation"
+import { useSession } from 'next-auth/react';
 
-const SigninPage=()=> {
+interface IProps{
+  searchParams?:{[key:string]:string | string[] | undefined};
+}
+
+const SigninPage=({ searchParams }: IProps)=> {
+
 const username = useRef("");
 const password = useRef("")
 
+const session = useSession()
+const router = useRouter()
 
-const handlSubmite = async()=>{
+const userRol = session.data?.user.role
+
+useEffect(() => {
+    if (userRol === "ADMIN") {
+        router.push('/admin')
+    } else if (userRol === "USER") {
+        router.push('/user')
+    }
+})
+
+
+const handlSubmite = async ()=>{
     const result = await signIn("credentials",{
         username:username.current,
         password:password.current,
         redirect:true,
-        callbackUrl:"/admin"
+        callbackUrl:"/"
     })
     console.log(result)
 }
@@ -45,8 +65,7 @@ const handlSubmite = async()=>{
             <p className="mt-3 text-md text-slate-400">
               Connectez-vous à votre compte
             </p>
-
-
+            {searchParams?.message && <p className="text-red-700 bg-red-100 py-2 px-5 rounded-md">{searchParams?.message}</p>}
 
             <div className="mt-16 space-y-8">
               <div>
