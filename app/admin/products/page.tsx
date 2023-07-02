@@ -1,5 +1,6 @@
 import React from 'react'
 import ProductTable from './components/ProductsTable'
+import "./style.css"
 
 interface Props {}
 

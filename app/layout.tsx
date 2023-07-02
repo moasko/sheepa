@@ -1,10 +1,11 @@
+import AuthProviders from '@/providers/AuthProvider'
 import './globals.css'
-import { Poppins } from 'next/font/google'
-import Providers from '../components/providers'
+import { Poppins, Roboto } from 'next/font/google'
+import QueryProvider from '@/providers/QueryProvider'
 
 
 
-const poppins = Poppins({
+const poppins = Roboto({
   subsets: ["latin-ext"],
   weight: "400"
 })
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Providers>
-          {children}
-        </Providers>
+        <QueryProvider>
+          <AuthProviders>
+            {children}
+          </AuthProviders>
+        </QueryProvider>
       </body>
     </html>
   )

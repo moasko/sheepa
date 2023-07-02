@@ -1,9 +1,9 @@
 import Card from "@/components/Card"
 
-
 export default function Home() {
   return (
     <div className='w-full grid gap-4'>
+      
       <div className='grid gap-4 grid-cols-5 mt-6'>
         <Card headerContent={
           <h1 className='font-semibold'>Nouvelle Commandes</h1>
@@ -50,6 +50,7 @@ export default function Home() {
           </div>
         </Card>
       </div>
+
       <div className='flex gap-4'>
         <div className='w-8/12'>
           <Card>
