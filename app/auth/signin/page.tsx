@@ -26,17 +26,20 @@ useEffect(() => {
     if (userRol === "ADMIN") {
         router.push('/admin')
     } else if (userRol === "USER") {
-        router.push('/user')
+        router.push('/')
     }
 })
 
+useEffect(()=>{
+  router.prefetch('/admin')
+},[router])
 
 const handlSubmite = async ()=>{
     const result = await signIn("credentials",{
         username:username.current,
         password:password.current,
         redirect:true,
-        callbackUrl:"/"
+        callbackUrl:"/admin"
     })
     console.log(result)
 }
