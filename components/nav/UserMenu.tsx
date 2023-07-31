@@ -1,7 +1,7 @@
 import React from "react";
 
 import { BiBoltCircle } from "react-icons/bi";
-import { Avatar, Button, Pane, Popover } from "evergreen-ui";
+import { Button, Pane, Popover } from "evergreen-ui";
 import { FiChevronDown } from "react-icons/fi";
 import { MdOutlineLogout } from "react-icons/md";
 import { AiOutlineSetting, AiOutlineShop } from "react-icons/ai";
@@ -10,6 +10,7 @@ import { BsCodeSlash } from "react-icons/bs";
 import Link from "next/link";
 
 import { signOut, useSession } from "next-auth/react";
+import { Avatar } from "@nextui-org/react";
 
 function UserMenu() {
 
@@ -61,8 +62,8 @@ function UserMenu() {
       }
     >
       <div className="flex items-center space-x-2 cursor-pointer">
-        <Avatar size={25} color={"orange"} name={user?.name} />
-        <h2 className="font-semibold">{user?.name}</h2>
+        <Avatar size="md" textColor="white" color="gradient" squared text={user?.name} />
+        <span className="font-semibold">{user?.name}</span>
         <FiChevronDown color="#555d67" />
       </div>
     </Popover>

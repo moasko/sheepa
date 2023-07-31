@@ -1,7 +1,9 @@
+"use client";
+
 import AuthProviders from '@/providers/AuthProvider'
 import './globals.css'
 import { Poppins, Roboto } from 'next/font/google'
-import QueryProvider from '@/providers/QueryProvider'
+import { QueryClientProvider,  QueryClient, } from '@tanstack/react-query';
 
 
 
@@ -15,6 +17,8 @@ export const metadata = {
   description: 'online commerce cms',
 }
 
+const queryClient = new QueryClient()
+
 export default function RootLayout({
   children,
 }: {
@@ -22,13 +26,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <QueryProvider>
+      <body className="relative">
+        <QueryClientProvider client={queryClient} >
           <AuthProviders>
             {children}
           </AuthProviders>
-        </QueryProvider>
+        </QueryClientProvider>
       </body>
     </html>
   )
 }
+
+

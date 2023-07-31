@@ -1,149 +1,206 @@
-"use client"
+"use client";
 
 import React, { useState } from 'react';
 import {
-    Badge,
-    DeleteIcon,
-    DuplicateIcon,
-    EditIcon,
-    MoreIcon,
-    Tooltip,
-    Pane,
-    Dialog,
     Button,
-    Switch
+    Select,
+    SearchInput,
+    Dialog,
 } from "evergreen-ui";
-import { Image, Pagination, } from "antd";
-import Link from "next/link";
-import { toaster } from "evergreen-ui";
 
 import AddProductSlideSheet from './AddProductSlideSheet';
-import { formatPrice } from '@/lib/utils/priceFormater';
-import { priceFormatter } from '@/lib/helpers/priceFormatter';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
-
+import ProductListItem from './ProductListItem';
+import { ProductProps } from "@/lib/interfaces/modelsInterfaces";
+import EmptyProduct from './EmptyProducts';
+import notify from '@/lib/utils/notification';
+import { getAllProducts, deleteProduct } from '@/services/products.sercices';
+import EditProductSlideSheet from './EditProductSlideSheet';
 
 const ProductTable: React.FC = () => {
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const queryClient = useQueryClient();
+    const [addOpen, setAddOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
+
+    const [selectedProduct, setSelectedProduct] = useState<number | undefined>(undefined)
+    const [toEditId, setToEditId] = useState<number | undefined>(undefined)
+
+    const { data, isLoading, error } = useQuery(['admProducts'], getAllProducts);
+
+    const onDeleteProduct = (productId: number | undefined) => {
+        deleteProduct(Number(productId))
+            .then(res => {
+                queryClient.invalidateQueries(['admProducts']);
+                notify({
+                    title: 'Produit supprimé',
+                    type: 'success',
+                    message: res.message
+                });
+            })
+            .catch(err => {
+                notify({
+                    title: 'Erreur lors de la suppression',
+                    type: 'error',
+                    message: err.message
+                });
+            });
+    };
 
     return (
-        <div className="shipa-table-container">
-        <div className="shipa-table">
-            <table className='w-full caption-bottom'>
-                <thead className='border-b p-3'>
-                    <tr role="row">
-                        <th
-                            role="columnheader"
-                            className="unselectable"
-                            style={{ whiteSpace: "nowrap" }}
-                        >
-                            ID
-                        </th>
+        <>
 
-                        <th
-                            role="columnheader"
-                            className="unselectable"
-                            style={{ whiteSpace: "nowrap" }}
+            <div>
+                <div className="flex justify-between w-full py-7">
+                    <div>
+                        <h1 className="text-2xl font-semibold">Produits</h1>
+                    </div>
+                    <div className="flex space-x-5">
+                        <Select
+                            defaultValue="foo"
+                            height={40}
+                            onChange={(event) => alert(event.target.value)}
                         >
-                            Produit
-                        </th>
-                        <th
-                            role="columnheader"
-                            className="unselectable"
-                            style={{ whiteSpace: "nowrap" }}
+                            <option value="foo">Tous les statuts</option>
+                            <option value="bar">Actif</option>
+                            <option value="baz">En avant</option>
+                            <option value="qux">Désactivé</option>
+                        </Select>
+                        <Select
+                            defaultValue="foo"
+                            height={40}
+                            onChange={(event) => alert(event.target.value)}
                         >
-                            Status
-                        </th>
-                        <th
-                            role="columnheader"
-                            className="unselectable"
-                            style={{ whiteSpace: "nowrap" }}
+                            <option value="foo">Produits en stock</option>
+                            <option value="bar">En rupture</option>
+                            <option value="baz">En avant</option>
+                            <option value="qux">Désactivé</option>
+                        </Select>
+                        <Select
+                            defaultValue="foo"
+                            height={40}
+                            onChange={(event) => alert(event.target.value)}
                         >
-                            Stock
-                        </th>
-                        <th
-                            role="columnheader"
-                            className="unselectable"
-                            style={{ whiteSpace: "nowrap" }}
+                            <option value="foo">Tous les statuts</option>
+                            <option value="bar">Actif</option>
+                            <option value="baz">En avant</option>
+                            <option value="qux">Désactivé</option>
+                        </Select>
+                        <SearchInput
+                            height={40}
+                            placeholder="Chercher un produit"
+                        />
+                        <Button
+                            onClick={() => setAddOpen(true)}
+                            height={40}
+                            backgroundColor="black"
+                            color="white"
+                            marginRight={16}
                         >
-                            Prix
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody className=''>
-
-                    <tr role="row" >
-                        <td>1</td>
-                        <td className="w-[40%]">
-                            <Link href={"#"}>
-                                <div className="flex">
-                                    <div className="relative w-16 h-16 mr-3 flex items-center justify-center bg-slate-400">
-                                        <Image
-                                            alt="product image"
-                                            src={
-
-                                                "/default_product_image.jpg"
-                                            }
+                            + Ajouter
+                        </Button>
+                    </div>
+                </div>
+                {isLoading ? (
+                    <EmptyProduct
+                        error={error}
+                        setAddProductShown={() => setAddOpen(true)}
+                        isLoading={isLoading}
+                    />
+                ) : (
+                    <div className="shipa-table-container">
+                        <div className="shipa-table">
+                            <table className='w-full caption-bottom'>
+                                <thead className='border-b p-3'>
+                                    <tr role="row">
+                                        <th
+                                            role="columnheader"
+                                            className="unselectable"
+                                            style={{ whiteSpace: "nowrap" }}
+                                        >
+                                            ID
+                                        </th>
+                                        <th
+                                            role="columnheader"
+                                            className="unselectable"
+                                            style={{ whiteSpace: "nowrap" }}
+                                        >
+                                            Produit
+                                        </th>
+                                        <th
+                                            role="columnheader"
+                                            className="unselectable"
+                                            style={{ whiteSpace: "nowrap" }}
+                                        >
+                                            Status
+                                        </th>
+                                        <th
+                                            role="columnheader"
+                                            className="unselectable"
+                                            style={{ whiteSpace: "nowrap" }}
+                                        >
+                                            Stock
+                                        </th>
+                                        <th
+                                            role="columnheader"
+                                            className="unselectable"
+                                            style={{ whiteSpace: "nowrap" }}
+                                        >
+                                            Prix
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className=''>
+                                    {data?.products?.map((product: ProductProps) => (
+                                        <ProductListItem
+                                            key={product.id}
+                                            product={product}
+                                            onDelete={() => {
+                                                setSelectedProduct(product?.id)
+                                                setShowDeleteDialog(true)
+                                            }}
+                                            onEdit={() => {
+                                                setEditOpen(true)
+                                                setToEditId(product?.id)
+                                            }}
                                         />
-                                    </div>
-
-                                    <div className="product-table-type-title">
-                                        <div>mon nom</div>
-                                        <div className="product-table-type-date">
-                                            12/05/2022
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        </td>
-                        <td>
-                            <div className="flex space-x-1 items-center h-full">
-                                <Switch onChange={(e) => console.log(e)} height={16} />
-                                <Badge color="green" marginRight={8}>
-                                    En ligne
-                                </Badge>
-                            </div>
-
-                        </td>
-                        <td>{10}</td>
-
-                        <td>{priceFormatter.format(150000)}</td>
-                        <td className="pr-10">
-                            <Tooltip
-                                position="left"
-                                appearance="card"
-                                statelessProps={{
-                                    padding: "unset",
-                                    overflow: "hidden",
-                                    minWidth: "max-content",
+                                    ))}
+                                </tbody>
+                            </table>
+                            <AddProductSlideSheet
+                                isShown={addOpen}
+                                onClose={() => setAddOpen(false)}
+                            />
+                            <EditProductSlideSheet
+                                productId={Number(toEditId)}
+                                isShown={editOpen}
+                                onClose={() => setEditOpen(false)}
+                            />
+                            <Dialog
+                                isShown={showDeleteDialog}
+                                title="Suppression de produit"
+                                intent="danger"
+                                onCloseComplete={() => {
+                                    setSelectedProduct(undefined)
+                                    setShowDeleteDialog(false)
                                 }}
-                                content={
-                                    <div className="flex items-center">
-                                        <button onClick={() => console.log("gf")} className="flex items-center space-x-2 p-2 hover:bg-slate-200">
-                                            <EditIcon color="gray" size={14} />
-                                            <span className="text-sm text-gray-600">
-                                                Editer
-                                            </span>
-                                        </button>
-                                        <button onClick={() => console.log("gf")} className="flex items-center space-x-2 p-2 hover:bg-red-400/20">
-                                            <DeleteIcon color="red" size={14} />
-                                            <span className="text-sm text-red-600">
-                                                Supprimer
-                                            </span>
-                                        </button>
-                                    </div>
-                                }
+                                confirmLabel="Supprimer"
+                                onConfirm={() => {
+                                    onDeleteProduct(selectedProduct)
+                                    setShowDeleteDialog(false);
+                                    setSelectedProduct(undefined)
+                                }}
+                                isConfirmLoading={false}
                             >
-                                <MoreIcon color="gray" size={14} />
-                            </Tooltip>
-                        </td>
-                    </tr>
-
-                </tbody>
-            </table>
-            <AddProductSlideSheet isShown={true} onClose={() => console.log("closef")} refreshProducts={() => console.log("red")} />
+                                Êtes-vous sûr de vouloir supprimer ce produit ?
+                            </Dialog>
+                        </div>
+                    </div>
+                )}
             </div>
-        </div>
+
+        </>
     );
 };
 

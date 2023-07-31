@@ -4,6 +4,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `phone` VARCHAR(191) NULL,
+    `email_verified` BOOLEAN NOT NULL DEFAULT false,
     `password` VARCHAR(191) NOT NULL,
     `role` ENUM('USER', 'ADMIN', 'VENDOR', 'PRODUCT_MANAGER', 'CALL_CENTER') NOT NULL DEFAULT 'USER',
 
@@ -62,12 +63,14 @@ CREATE TABLE `Session` (
 
 -- CreateTable
 CREATE TABLE `VerificationToken` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `identifier` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `VerificationToken_token_key`(`token`),
-    UNIQUE INDEX `VerificationToken_identifier_token_key`(`identifier`, `token`)
+    UNIQUE INDEX `VerificationToken_identifier_token_key`(`identifier`, `token`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -182,6 +185,14 @@ CREATE TABLE `Order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `userId` INTEGER NOT NULL,
+    `total` INTEGER NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'pending',
+    `paymentId` VARCHAR(191) NULL,
+    `name` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `supPhone` VARCHAR(191) NULL,
+    `address` VARCHAR(191) NULL,
+    `code` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

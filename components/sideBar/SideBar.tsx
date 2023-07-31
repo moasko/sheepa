@@ -42,10 +42,10 @@ function SideBar() {
             active: pathname === "/admin/customers"
         },
         {
-            url: "/admin/categorys",
+            url: "/admin/categories",
             icon: TbCategory,
             label: "Categories",
-            active: pathname === "/admin/categorys"
+            active: pathname === "/admin/categories"
         },
         {
             url: "/admin/files-manager",

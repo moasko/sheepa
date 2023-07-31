@@ -4,7 +4,7 @@ import { getSectionsProducts } from '@/services/products.sercices';
 import Link from 'next/link';
 import { FC, useEffect } from 'react';
 import { BiChevronRight } from 'react-icons/bi';
-import { useQuery } from 'react-query';
+import { useQuery } from '@tanstack/react-query';
 import ProductCard from '../cardes/products/ProductCard';
 import { ProductProps } from "@/lib/interfaces/modelsInterfaces"
 import ProductsLoading from './loaders/ProductsLoading';

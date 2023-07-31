@@ -1,7 +1,6 @@
 import AdminToolBar from "@/components/AdminToolBar";
 import Footer from "@/components/siteComponents/siteLayout/Footer"
 import Header from "@/components/siteComponents/siteLayout/Header"
-import Navigation from "@/components/siteComponents/siteLayout/navigation";
 
 
 export const metadata = {
@@ -19,9 +18,6 @@ export default function SiteLayout({
         <>
             <AdminToolBar />
             <Header />
-            {/*la section de la bare de navigation*/}
-        
-            {/*la section de la bare de navigation*/}
             {children}
             <Footer />
         </>

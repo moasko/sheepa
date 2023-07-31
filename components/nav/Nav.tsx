@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 function Header() {
     return (
-        <div className='h-[56px] bg-white w-full shadow-sm relative'>
+        <div className='h-[56px] bg-white w-full shadow-sm sticky top-0 z-10'>
             <div className='w-full h-full flex flex-row items-center relative'>
                 {/* logo */ }
                 <div className='w-[70px] h-full text-xl font-bold flex justify-center bg-blue-300 items-center'>

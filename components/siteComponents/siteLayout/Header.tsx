@@ -24,7 +24,7 @@ function Header() {
         <div className="rowser">
           <div className="mr-10">
             <Link href="/">
-              <Image src="/logo.webp" width={192} height={60} alt="zangochap logo" />
+              <Image src="/logo_orange.png" width={172} height={50} alt="asfat" />
             </Link>
           </div>
           <div className="seacher">

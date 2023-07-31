@@ -1172,3 +1172,103 @@ root {
 
 
   
+
+
+  table {
+    caption-side: bottom;
+    border-collapse: collapse;
+  }
+  
+  thead,
+  tbody,
+  tfoot,
+  tr,
+  td,
+  th {
+    border-color: inherit;
+    border-style: solid;
+    border-width: 0;
+  }
+  
+  
+  .shipa-table table thead th:first-child {
+    padding-left: 1.25rem !important;
+    border-radius: 0.5rem 0 0 0;
+  }
+  
+  .shipa-table table thead th:last-child {
+    border-radius: 0 0.5rem 0 0;
+  }
+  
+  .shipa-table-container .shipa-table {
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(7, 14, 35, .06), 0 2px 8px -1px rgba(7, 14, 35, .05);
+    background-color: #fff;
+  }
+  
+  .shipa-table-container {
+    border-radius: 0.5rem;
+    box-shadow: none;
+  }
+  
+  .shipa-table table {
+    background: #fff;
+    border-radius: 0.5rem 0.5rem 0.5rem 0.5rem;
+    margin-bottom: 0;
+    table-layout: auto;
+    width: 100%;
+  }
+  
+  
+  .shipa-table table thead th {
+    background: #fff;
+    color: #777f89;
+    padding: 0.875rem 0.75rem 0.875rem 1.25rem;
+    border-bottom: none !important;
+    border-top: none !important;
+    cursor: pointer;
+    white-space: nowrap;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    text-align: left;
+  }
+  
+  .shipa-table table tbody tr td {
+    vertical-align: middle;
+    padding: 13px 0 !important;
+    padding-left: 1.25rem !important;
+    border: none;
+    border-top: 1px solid #f5f7f8 !important;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    color: #121417;
+  }
+  
+  .shipa-table table tbody tr:hover {
+    background-color: #f5f7f8;
+  }
+  
+  
+  .product-table-type-title {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    font-size: 14px;
+  }
+  
+  .product-table-type-date {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #777f89;
+    margin-top: 0.25rem;
+  }
+  
+  .ql-editor {
+    min-height: 200px;
+  }

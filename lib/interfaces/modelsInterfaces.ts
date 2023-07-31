@@ -66,28 +66,27 @@ export interface VerificationTokenProps {
 }
 
 export interface ProductProps {
-    id: number;
+    id?: number | undefined;
     name: string;
     slug: string;
-    price: number;
+    price: number | undefined;
     reduction?: number;
     isFeatured: boolean;
     isActive: boolean;
     sku?: string;
-    quantity: number;
+    quantity?: number;
     description?: string;
     seoTitle?: string;
     seoDescription?: string;
-    images: ProductImageProps[];
-    variants: ProductVariantProps;
-    categories: CategoryProps;
-    Tags: TagProps;
-    orders: OrderProps;
-    userId: number;
-    user: UserProps;
-    ProductReview: ProductReviewProps;
-    createdAt: Date;
-    updatedAt: Date;
+    images?: ProductImageProps[];
+    variants?: ProductVariantProps;
+    categories?: CategoryProps;
+    Tags?: TagProps;
+    orders?: OrderProps;
+    user?: number;
+    ProductReview?: ProductReviewProps;
+    createdAt?: Date;
+    updatedAt?: Date;
     weight?: number;
     dimensions?: string;
     brand?: string;
@@ -122,17 +121,20 @@ export interface ProductImageProps {
 }
 
 export interface CategoryProps {
-    id: number;
+    id?: number;
     name: string;
     slug: string;
     parent?: CategoryProps;
-    parentId?: number;
-    products: ProductProps;
+    parentId?: number | null;
+    products?: ProductProps;
     imageUrl?: string;
-    childCategories: CategoryProps;
+    childCategories?: CategoryProps;
     isEnabled: boolean;
     seoTitle?: string;
     seoDescription?: string;
+    _count?: {
+        products: number
+    }
 }
 
 export interface TagProps {
@@ -172,7 +174,15 @@ export interface OrderProps {
     createdAt: Date;
     userId: number;
     user: UserProps;
-    products: ProductProps;
+    products: ProductProps[];
+    total: number;
+    status: String;
+    paymentId?: String;
+    name?: String;
+    phone: String;
+    supPhone?: String;
+    address: String;
+    code?: String;
 }
 
 export interface PageProps {

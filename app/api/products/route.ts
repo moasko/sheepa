@@ -1,7 +1,7 @@
+import { BASE_URL } from "@/lib/helpers/constants";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
 
 const productSchema = z.object({
   name: z.string().nonempty(),
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const url = new URL(req.url || '', 'http://localhost:3000');
+    const url = new URL(req.url || '', BASE_URL);
     const searchParams = new URLSearchParams(url.search);
 
     const perPage = searchParams.get('perPage');
@@ -73,12 +73,12 @@ export async function GET(req: Request) {
           },
         },
         images: true,
-        categories:{
-            select:{
-              id:true,
-              name:true,
-              slug:true
-            }
+        categories: {
+          select: {
+            id: true,
+            name: true,
+            slug: true
+          }
         }
       },
     });
@@ -95,6 +95,30 @@ export async function GET(req: Request) {
     });
   } catch (error) {
     console.log('[PRODUCTS_GET]', error);
+    return new NextResponse('Internal error', { status: 500 });
+  }
+}
+
+
+export async function DELETE(req: Request) {
+  try {
+    const url = new URL(req.url || '', BASE_URL);
+    const searchParams = new URLSearchParams(url.search);
+
+    const id = searchParams.get('id')
+    const product = await prisma.product.delete({
+      where: {
+        id: Number(id)
+      }
+    })
+
+    return NextResponse.json({
+      message: 'Product deleted successfully',
+      product
+    })
+
+  } catch (error) {
+    console.log('[PRODUCTS_DELETE]', error);
     return new NextResponse('Internal error', { status: 500 });
   }
 }

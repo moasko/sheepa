@@ -1,5 +1,8 @@
+"use client";
+
 import SideBar from '@/components/sideBar/SideBar'
 import Nav from '@/components/nav/Nav'
+import { NextUIProvider } from '@nextui-org/react';
 
 export const metadata = {
   title: 'Sheepa',
@@ -12,7 +15,7 @@ export default function DashboardLayout({
   children: React.ReactNode
 }) {
   return (
-    <>
+    <NextUIProvider>
      {/* header */}
           <Nav />
           {/* app body */}
@@ -27,7 +30,7 @@ export default function DashboardLayout({
               </div>
             </main>
           </div>
-    </>
+    </NextUIProvider>
          
   )
 }
