@@ -12,10 +12,10 @@ const poppins = Roboto({
   weight: "400"
 })
 
-export const metadata:Metadata = {
-  title: 'Sheepa',
-  description: 'online commerce cms',
-}
+// export const metadata:Metadata = {
+//   title: 'Sheepa',
+//   description: 'online commerce cms',
+// }
 
 const queryClient = new QueryClient()
 
