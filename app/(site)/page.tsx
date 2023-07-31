@@ -1,12 +1,8 @@
 "use client"
 
 import React from 'react';
-import ProductCard from '@/components/siteComponents/cardes/products/ProductCard';
 import CategoriesHomePageList from '@/components/siteComponents/Listes/categorys/CategiresHommePageList';
 import Navigation from '@/components/siteComponents/siteLayout/navigation';
-import { useQuery } from 'react-query';
-
-import { ProductProps } from "@/lib/interfaces/modelsInterfaces"
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 
 

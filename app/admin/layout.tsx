@@ -3,8 +3,9 @@
 import SideBar from '@/components/sideBar/SideBar'
 import Nav from '@/components/nav/Nav'
 import { NextUIProvider } from '@nextui-org/react';
+import { Metadata } from 'next'
 
-export const metadata = {
+export const metadata:Metadata = {
   title: 'Sheepa',
   description: 'online commerce cms',
 }
