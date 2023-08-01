@@ -5,9 +5,9 @@ import Image from 'next/image';
 import type { FC } from 'react'
 
 
-interface pageProps { }
+interface CartPageProps { }
 
-const page: FC<pageProps> = ({ }) => {
+const CartPage: FC<CartPageProps> = ({ }) => {
   return (
     <section>
       <div className="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
@@ -105,4 +105,4 @@ const page: FC<pageProps> = ({ }) => {
     </section>
   );
 }
-export default page;
+export default CartPage;

@@ -3,15 +3,14 @@
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
-import { FC, Key, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ProductProps, ProductImageProps } from "@/lib/interfaces/modelsInterfaces"
-import { useRouter, useParams } from 'next/navigation';
+import { ProductImageProps } from "@/lib/interfaces/modelsInterfaces"
+import { useParams } from 'next/navigation';
 import { priceFormatter } from '@/lib/helpers/priceFormatter';
 import { Rate } from 'antd';
 import Head from 'next/head';
 import SingleProductLoading from '@/components/siteComponents/dynamicSections/loaders/SingleProductLoading';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 
 
 interface ProductDetailsProps { }
@@ -22,7 +21,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
   const { slug } = params
 
 
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['singleSlugProduct'],
     queryFn: () => getProduct(slug)
   })
