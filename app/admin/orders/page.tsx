@@ -94,7 +94,6 @@ const OrdersPage: FC<OrdersPageProps> = ({ }) => {
                                         width={280}
                                         height={200}
                                         selected={selected.value}
-                                        onSelect={(item) => setSelected(item)}
                                     >
                                         <Button iconAfter={<HiChevronDown />}>{selected.label}</Button>
                                     </SelectMenu>
@@ -112,13 +111,13 @@ const OrdersPage: FC<OrdersPageProps> = ({ }) => {
                                         return (
                                             <div key={product.id}>
                                                 <div className='flex space-x-3 hover:bg-slate-100 p-2 rounded-lg cursor-pointer'>
-                                                    <Image
+                                                    {/* <Image
                                                         className='rounded-md'
                                                         src={product.images?.length !== 0 ? product?.images[0]?.imageUrl : "/product_placeholder.png"}
                                                         width={70}
                                                         height={70}
                                                         alt='er'
-                                                    />
+                                                    /> */}
                                                     <div>
                                                         <h5>{product.name}</h5>
                                                         <Text fontSize={15}>Quantité : 1</Text>
