@@ -1,7 +1,7 @@
 export const colors = {
     promary: "orangered"
 }
-export const BASE_URL = process.env.APP_URL
+export const BASE_URL = "zangochap.vercel.app"
 
 export const API_BASE_URL = `${BASE_URL}/api`
 
