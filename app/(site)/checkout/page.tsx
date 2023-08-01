@@ -7,7 +7,7 @@ interface pageProps { }
 const page: FC<pageProps> = ({ }) => {
     return (
         <div className='main'>
-            <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
+            {/* <div className="flex flex-col items-center border-b bg-white py-4 sm:flex-row sm:px-10 lg:px-20 xl:px-32">
                 <a href="#" className="text-2xl font-bold text-gray-800">sneekpeeks</a>
               
             </div>
@@ -128,7 +128,7 @@ const page: FC<pageProps> = ({ }) => {
                     </div>
                     <button className="mt-4 mb-8 w-full rounded-md bg-gray-900 px-6 py-3 font-medium text-white">Place Order</button>
                 </div>
-            </div>
+            </div> */}
 
         </div>
     );

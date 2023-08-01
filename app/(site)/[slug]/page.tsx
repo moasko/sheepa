@@ -5,7 +5,7 @@ import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
 import { FC, Key, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ProductProps,ProductImageProps } from "@/lib/interfaces/modelsInterfaces"
+import { ProductProps, ProductImageProps } from "@/lib/interfaces/modelsInterfaces"
 import { useRouter, useParams } from 'next/navigation';
 import { priceFormatter } from '@/lib/helpers/priceFormatter';
 import { Rate } from 'antd';
@@ -29,7 +29,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
   useEffect(() => {
     refetch()
-  }, [slug])
+  }, [data])
 
   return (
     <>
@@ -65,7 +65,9 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                       }
                     </div>
 
-                    <img
+                    <Image
+                      height={560}
+                      width={560}
                       alt="Les Paul"
                       src={data?.images.length == 0 ? '/product_placeholder.png' : `${data?.images[0].imageUrl}`}
                       className="aspect-square w-full rounded-xl object-cover"

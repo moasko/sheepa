@@ -17,14 +17,9 @@ interface OrdersPageProps { }
 
 
 
-const page: FC<OrdersPageProps> = ({ }) => {
-    const [selected, setSelected] = useState({
-        label: 'En cours',
-        value: 'inProgress',
-        color: "blue"
-    })
+const OrdersPage: FC<OrdersPageProps> = ({ }) => {
 
-    const orderStatus = [
+ const orderStatus = [
         {
             label: 'En cours',
             value: 'inProgress',
@@ -43,6 +38,10 @@ const page: FC<OrdersPageProps> = ({ }) => {
             color: "red"
         }
     ]
+
+    const [selected, setSelected] = useState(orderStatus[0])
+
+   
 
     const { data, isLoading, isError, error } = useQuery(['admOrder'], getAllOrders)
 
@@ -111,7 +110,7 @@ const page: FC<OrdersPageProps> = ({ }) => {
                                 {
                                     items.products.map(product => {
                                         return (
-                                            <div>
+                                            <div key={product.id}>
                                                 <div className='flex space-x-3 hover:bg-slate-100 p-2 rounded-lg cursor-pointer'>
                                                     <Image
                                                         className='rounded-md'
@@ -143,4 +142,4 @@ const page: FC<OrdersPageProps> = ({ }) => {
         </div>
     );
 }
-export default page;
+export default OrdersPage;

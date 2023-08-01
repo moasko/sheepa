@@ -145,7 +145,7 @@ const CategoriesTable: FC<CategoriesTableProps> = ({ data }) => {
                             {
                                 data?.map((category: CategoryProps) => {
                                     return (
-                                        <tr role='row' >
+                                        <tr key={category.id} role='row' >
                                             <td>
                                                 <Text>{category.id}</Text>
                                             </td>
