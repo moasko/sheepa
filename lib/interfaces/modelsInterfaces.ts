@@ -110,12 +110,12 @@ export interface ProductVariantProps {
 
 export interface ProductImageProps {
     id: number;
-    productId: number;
+    productId?: number;
     alt?: string;
     product: ProductProps;
     variantId?: number;
     variant?: ProductVariantProps;
-    imageUrl: string;
+    imageUrl?: string;
     createdAt: Date;
     updatedAt: Date;
 }

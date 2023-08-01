@@ -58,7 +58,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                             width={110}
                             height={110}
                             alt=""
-                            src={image.imageUrl}
+                            src={image.imageUrl ?? "/product_placeholder.png"}
                             className="aspect-square rounded object-cover"
                           />
                         })
@@ -69,7 +69,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                       height={560}
                       width={560}
                       alt="Les Paul"
-                      src={data?.images.length == 0 ? '/product_placeholder.png' : `${data?.images[0].imageUrl}`}
+                      src={data?.images?.[0]?.imageUrl ?? "/product_placeholder.png"}
                       className="aspect-square w-full rounded-xl object-cover"
                     />
                   </div>
