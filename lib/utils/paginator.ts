@@ -41,7 +41,7 @@ export const paginate = paginator({ page: 1, perPage: 10 });
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { page, perPage } = req.query;
 
-  const paginatedResult = await paginate(prisma.produit, undefined, {
+  const paginatedResult = await paginate(prisma.product, undefined, {
     page: Number(page),
     perPage: Number(perPage),
   });
