@@ -34,7 +34,7 @@ function UserMenu() {
             </div>
             <Link
               target={"_blank"}
-              href={"http://localhost:3002"}
+              href={"http://localhost:3000"}
               className="flex space-x-3 items-center p-2 rounded-md hover:bg-slate-200"
             >
               <AiOutlineShop color="#555d67" size={20} />
