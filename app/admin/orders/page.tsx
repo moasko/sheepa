@@ -17,12 +17,7 @@ interface OrdersPageProps { }
 
 
 
-const page: FC<OrdersPageProps> = ({ }) => {
-    const [selected, setSelected] = useState({
-        label: 'En cours',
-        value: 'inProgress',
-        color: "blue"
-    })
+const OrdersPage: FC<OrdersPageProps> = ({ }) => {
 
     const orderStatus = [
         {
@@ -43,6 +38,10 @@ const page: FC<OrdersPageProps> = ({ }) => {
             color: "red"
         }
     ]
+
+    const [selected, setSelected] = useState(orderStatus[0])
+
+
 
     const { data, isLoading, isError, error } = useQuery(['admOrder'], getAllOrders)
 
@@ -95,7 +94,6 @@ const page: FC<OrdersPageProps> = ({ }) => {
                                         width={280}
                                         height={200}
                                         selected={selected.value}
-                                        onSelect={(item) => setSelected(item)}
                                     >
                                         <Button iconAfter={<HiChevronDown />}>{selected.label}</Button>
                                     </SelectMenu>
@@ -111,14 +109,14 @@ const page: FC<OrdersPageProps> = ({ }) => {
                                 {
                                     items.products.map(product => {
                                         return (
-                                            <div>
+                                            <div key={product.id}>
                                                 <div className='flex space-x-3 hover:bg-slate-100 p-2 rounded-lg cursor-pointer'>
                                                     <Image
-                                                        className='rounded-md'
-                                                        src={product.images?.length !== 0 ? product?.images[0]?.imageUrl : "/product_placeholder.png"}
+                                                        className="rounded-md"
+                                                        src={product?.images?.[0]?.imageUrl ?? "/product_placeholder.png"}
                                                         width={70}
                                                         height={70}
-                                                        alt='er'
+                                                        alt="Product Image"
                                                     />
                                                     <div>
                                                         <h5>{product.name}</h5>
@@ -143,4 +141,4 @@ const page: FC<OrdersPageProps> = ({ }) => {
         </div>
     );
 }
-export default page;
+export default OrdersPage;

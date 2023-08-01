@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
+import { CategoryProps } from '@/lib/interfaces/modelsInterfaces';
 
-function CategorieCard({category_data}) {
-    const {image,slug,category_name} =category_data
+function CategorieCard({category_data}:{category_data:CategoryProps}) {
+    const {imageUrl,slug,name} =category_data
     return (
         <div className="col_4">
             <Link
@@ -16,11 +17,11 @@ function CategorieCard({category_data}) {
                     width:"120px",
                     height:"120px"
                 }}>
-                <Image src={image} fill sizes="(max-width: 768px) 100vw,
+                <Image src={imageUrl ?? "./product_placeholder.png"} fill sizes="(max-width: 768px) 100vw,
               (max-width: 1200px) 50vw,
               33vw" alt="image" />
                 </div>
-                <h3 className="xxjtext">{category_name}</h3>
+                <h3 className="xxjtext">{name}</h3>
             </Link>
         </div>
     )

@@ -21,7 +21,7 @@ const ProductListItem: FC<ProductListItemProps> = ({ product,onDelete,onEdit }) 
                 <Link href={"#"}>
                     <div className="flex">
                         <div className="relative w-16 h-16 mr-3 flex items-center justify-center bg-slate-400">
-                            <Image alt="product image" src={product?.images?.length !== 0 ? product?.images[0].imageUrl : "/product_placeholder.png"} />
+                            <Image alt="product image" src={product?.images?.[0]?.imageUrl ?? "/product_placeholder.png"} />
                         </div>
 
                         <div className="product-table-type-title">
