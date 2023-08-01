@@ -4,8 +4,8 @@ import Header from "@/components/siteComponents/siteLayout/Header"
 
 
 export const metadata = {
-    title: 'Zangochap',
-    description: 'Mieux s\'habiller à bas prix',
+    title: 'zangochap',
+    description: 'Mieux s'habiller à bas prix',
 }
 
 export default function SiteLayout({
