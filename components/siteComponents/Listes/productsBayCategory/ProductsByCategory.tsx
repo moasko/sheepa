@@ -1,8 +1,8 @@
 import React from 'react'
 import ProductCard from '../../cardes/products/ProductCard'
+import {ProductProps} from "@/lib/interfaces/modelsInterfaces"
 
-
-function ProductsByCategory({category_name,products }) {
+function ProductsByCategory({category_name,products }:{category_name:string,products:ProductProps[]}) {
 
   return (
     <div>
