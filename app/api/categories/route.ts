@@ -5,16 +5,11 @@ import { NextResponse } from "next/server";
 export async function GET() {
     try {
         const data = await prisma.category.findMany({
-            where: {
-                // isEnabled: true,
-                parent: null
-            },
             orderBy:{
                 id:"desc"
             },
             include: {
                 childCategories: true,
-                parent: true,
                 _count: {
                     select: {
                         products: true

@@ -17,10 +17,11 @@ import {
 import slugify from "@/lib/utils/slugify";
 import { Collapse } from "@nextui-org/react";
 import DescriptionInput from "./DescriptionInput";
-import { ProductProps } from "@/lib/interfaces/modelsInterfaces";
+import { ProductProps, CategoryProps } from "@/lib/interfaces/modelsInterfaces";
 import { createProduct } from "@/services/products.sercices";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import notify from "@/lib/utils/notification";
+import TagsSelect from "@/components/TagsSelect";
 
 
 interface AddProductSlideSheetProps {
@@ -45,12 +46,13 @@ function AddProductSlideSheet({
     seoTitle: "",
     seoDescription: "",
     user: 1,
+    categories: ""
   };
 
 
   const [productData, setProductData] = useState<ProductProps>(initialState);
   const queryClient = useQueryClient()
-  
+
 
   useEffect(() => {
     setProductData(initialState);
@@ -82,7 +84,6 @@ function AddProductSlideSheet({
   });
 
 
-
   useEffect(() => {
     handleInputChange("slug", slugify(productData.name));
   }, [productData.name]);
@@ -101,7 +102,7 @@ function AddProductSlideSheet({
         }}
       >
         {
-          productMutation.isError ? <div className="w-full transition-all bg-red-600 text-white">{JSON.stringify(productMutation.error)}</div> : null
+          productMutation.isError ? <div className="w-full transition-all  bg-red-600 text-white">{JSON.stringify(productMutation.error)}</div> : null
         }
 
         <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
@@ -168,6 +169,16 @@ function AddProductSlideSheet({
                   />
                 </div>
 
+                {/* <div>
+                  <CategoryTreeSelector onChange={(value) => {
+                    console.log(value)
+                  }} />
+                </div> */}
+                <div className="my-5">
+                  <TagsSelect onChange={(e) => {
+                    handleInputChange("categories", e)
+                  }} />
+                </div>
                 <div>
                   <span className="text-sm font-semibold block mb-3">
                     Description
@@ -299,9 +310,9 @@ function AddProductSlideSheet({
           </Button>
           <Button
             size="large"
-            onClick={() =>{
+            onClick={() => {
               console.log(productData)
-               productMutation.mutate(productData)
+              productMutation.mutate(productData)
             }}
             iconBefore={productMutation.isLoading ? <Spinner /> : <SavedIcon />}
             appearance="minimal"

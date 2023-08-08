@@ -19,18 +19,17 @@ function Header() {
 
 
   return (
-    <header className='sticky top-0 z-10 bg-white p-[12px]  w-full shadow-md' >
+    <header className='sticky top-0 max-h-[72px] z-10 bg-white p-[12px]  w-full shadow-[0_4px_4px_-4px_#0000001f]' >
       <section className="wrapper">
         <div className="rowser">
           <div className="mr-10">
             <Link href="/">
-              <Image src="/logo.webp" width={172} height={50} alt="asfat" />
+              <Image src="/logo.webp" width={134} height={30} alt="asfat" />
             </Link>
           </div>
           <div className="seacher">
             <SearchInput />
             {/* <input type="text" placeholder="Cherchez un produit, une marque ou une categorie" name="searchbar" id="searchbar" /> */}
-
           </div>
           <div className="col">
             <div className="trils ml15 _df _ai-c _jc-c _fw-w w100">

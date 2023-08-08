@@ -2,53 +2,43 @@ import { priceFormatter } from '@/lib/helpers/priceFormatter';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-import { ProductProps } from "@/lib/interfaces/modelsInterfaces"
+import { ProductProps } from '@/lib/interfaces/modelsInterfaces';
 
 interface ProductCardProps {
     product_data: ProductProps;
+    showButton?: boolean;
 }
-const ProductCard: React.FC<ProductCardProps> = ({ product_data }) => {
-    const {
-        id,
-        images,
-        name,
-        price,
-        slug,
-        reduction
-    } = product_data;
 
-    const handleAddToCart = () => {
-        console.log({
-            id,
-            images,
-            name,
-            price,
-            slug,
-            qt: 1,
-        });
-    };
+const ProductCard: React.FC<ProductCardProps> = ({ product_data, showButton=false }) => {
+    const { id, images, name, price, slug, reduction } = product_data;
+    const placeholderImage = "/product_placeholder.png";
+    const imageSrc = images?.length !== 0 ? images[0].imageUrl || placeholderImage : placeholderImage;
+    const imageSizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw";
 
     return (
-        <div className="product-cards group rounded overflow-hidden border border-gray-200">
-            <Link
-                href={{ pathname: `/${slug}`, query: { slug: slug } }}
-                as={{ pathname: `/${slug}` }}>
+        <article className="overflow-hidden group relative pb-2 hover:shadow-lg">
+            <Link href={{ pathname: `/${slug}`, query: { slug: slug } }} as={{ pathname: `/${slug}` }}>
                 <div className="h-[185px] w-full relative">
-                    <Image sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" fill blurDataURL="./product_placeholder.png" src={'/product_placeholder.png'} alt="image" />
+                    <Image sizes={imageSizes} fill blurDataURL={placeholderImage} src={imageSrc} alt="image" />
                 </div>
-                <div className="prduct_name mb-2 line-clamp-2">{name}</div>
-                <div className="prix">{priceFormatter.format(Number(price))}</div>
-                {price != null ? <div className="prix_bare"><s>{priceFormatter.format(price)}</s></div> : null}
+                <div className='p-1'>
+                         <div className="product_name mb-2 line-clamp-1 text-[.75rem]">{name}</div>
+                <div className="price font-semibold text-[.875rem]">{priceFormatter.format(Number(price))}</div>
+                {price != null ? <div data-oprc={priceFormatter.format(price)} className="price_bare text-[#75757a]"><s>{priceFormatter.format(price)}</s></div> : null}
                 {/* {stock <= 0 ? <p className="text-red-600">Rupture de stock</p> : null} */}
+                </div>
+           
             </Link>
-            <button
-                // onClick={()=>handleAddToCart()}
-                className="group-hover:opacity-90 w-[90%] block bg-orange-500 text-center text-white text-md uppercase mt-5 py-[8px] rounded-sm m-auto"
-            >
-                Ajouter au panier
-            </button>
+
             <div className="absolute top-1 right-1 bg-red-500/20 text-red-500 rounded p-1">-{reduction}%</div>
-        </div>
+
+            {/* Display button on hover card */}
+            {showButton ? (
+                <div className="w-full invisible group-hover:visible flex justify-center px-2">
+                    <button className="py-2 rounded-sm mt-2 w-full bg-orange-500 font-semibold text-white text-center">Ajouter au Panier</button>
+                </div>
+            ) : null}
+        </article>
     );
 };
 

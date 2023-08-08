@@ -80,7 +80,7 @@ export interface ProductProps {
     seoDescription?: string;
     images?: ProductImageProps[];
     variants?: ProductVariantProps;
-    categories?: CategoryProps;
+    categories?: string;
     Tags?: TagProps;
     orders?: OrderProps;
     user?: number;

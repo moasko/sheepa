@@ -1,25 +1,32 @@
 import axios from 'axios';
 import { API_BASE_URL, PRODUCTS_SECTION_DEFAULT_LIMITE } from '@/lib/helpers/constants';
 import { ProductProps } from "@/lib/interfaces/modelsInterfaces"
+import { useQuery } from '@tanstack/react-query';
+
 interface GetSectionsProducts {
   category?: string;
   limit?: number;
 }
+
+
+
+
 
 export const getSectionsProducts = async ({
   category,
   limit = PRODUCTS_SECTION_DEFAULT_LIMITE,
 }: GetSectionsProducts) => {
   try {
-    const { data } = await axios.get(`${API_BASE_URL}/products`, {
-      params: {
-        category: category,
-        prePage: limit,
-      },
-    });
+    const url = `${API_BASE_URL}/products`;
+    const params = {
+      category: category,
+      perPage: limit,
+    };
+    const { data } = await axios.get(url, { params });
     return data;
+
   } catch (error) {
-    console.log(error);
+    console.error('Error while fetching products:', error);
     throw new Error('Failed to fetch products');
   }
 };
@@ -33,10 +40,22 @@ export const getProduct = async (slug: string) => {
     throw new Error('Failed to fetch product');
   }
 };
-
-export const getAllProducts = async () => {
+interface GetAllProductsProps {
+  perPage?: number,
+  page?: number,
+  minPrice?: number,
+  maxPrice?: number
+}
+export const getAllProducts = async ({ perPage, page, minPrice, maxPrice }: GetAllProductsProps) => {
   try {
-    const { data } = await axios.get(`${API_BASE_URL}/products`);
+    const { data } = await axios.get(`${API_BASE_URL}/products`, {
+      params: {
+        perPage,
+        page,
+        maxPrice,
+        minPrice
+      }
+    });
     return data;
   } catch (error) {
     console.log(error);

@@ -1,16 +1,59 @@
 "use client";
 
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { Suspense } from 'react';
+
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
 import { FC, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { ProductImageProps } from "@/lib/interfaces/modelsInterfaces"
+import { ProductImageProps, ProductProps } from "@/lib/interfaces/modelsInterfaces"
 import { useParams } from 'next/navigation';
 import { priceFormatter } from '@/lib/helpers/priceFormatter';
 import { Rate } from 'antd';
 import Head from 'next/head';
 import SingleProductLoading from '@/components/siteComponents/dynamicSections/loaders/SingleProductLoading';
+export const runtime = 'edge';
+
+export async function generateMetadata({
+  params
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
+  const product = await getProduct(params.slug);
+
+  if (!product) return notFound();
+
+  const { url, width, height, altText: alt } = product.featuredImage || {};
+  const hide = !product.tags.includes("a");
+
+  return {
+    title: product.seo.title || product.title,
+    description: product.seo.description || product.description,
+    robots: {
+      index: hide,
+      follow: hide,
+      googleBot: {
+        index: hide,
+        follow: hide
+      }
+    },
+    openGraph: url
+      ? {
+          images: [
+            {
+              url,
+              width,
+              height,
+              alt
+            }
+          ]
+        }
+      : null
+  };
+}
 
 
 interface ProductDetailsProps { }
@@ -21,10 +64,30 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
   const { slug } = params
 
 
-  const { data, isLoading, refetch } = useQuery({
+
+
+  const { data, isLoading, refetch } = useQuery<ProductProps>({
     queryKey: ['singleSlugProduct'],
     queryFn: () => getProduct(slug)
   })
+
+  const productJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: data?.name,
+    description: data?.description,
+    // image: data?.images.first?.imageUrl,
+    offers: {
+      '@type': 'AggregateOffer',
+      availability: data?.isActive
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
+      priceCurrency: "FCFA",
+      highPrice: data?.reduction,
+      lowPrice: data?.price
+    }
+  };
+
 
   useEffect(() => {
     refetch()
@@ -32,6 +95,13 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
   return (
     <>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productJsonLd)
+        }}
+      />
       <Head>
         <title>iPhone 12 XS Max For Sale in Colorado - Big Discounts | Apple</title>
         <meta

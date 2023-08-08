@@ -1,7 +1,7 @@
 import { BASE_URL } from "@/lib/helpers/constants";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
-import { z } from "zod";
+import { number, z } from "zod";
 
 const productSchema = z.object({
   name: z.string().nonempty(),
@@ -15,12 +15,22 @@ const productSchema = z.object({
   seoTitle: z.string(),
   seoDescription: z.string(),
   user: z.number(),
+  categories: z.string()
 });
+
+interface Category {
+  id: number;
+  name: string,
+  slug: string,
+  childCategories:any
+}
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
     const productData = productSchema.parse(body);
+
+    const formatCategories = productData.categories?.split(',').map((categoriId: string) => { return { id: Number(categoriId)} }, [])
 
     const product = await prisma.product.create({
       data: {
@@ -30,6 +40,9 @@ export async function POST(req: Request) {
             id: productData.user,
           },
         },
+        categories: {
+          connect: formatCategories
+        }
       },
     });
 
@@ -48,6 +61,9 @@ export async function GET(req: Request) {
     const perPage = searchParams.get('perPage');
     const page = searchParams.get('page');
     const category = searchParams.get('category');
+    const minPrice = searchParams.get('minPrice');
+    const maxPrice = searchParams.get('maxPrice');
+    const tags = searchParams.get('tags');
 
     const pageNumber = page ? Number(page) : 1;
     const pageSize = perPage ? Number(perPage) : undefined;
@@ -56,6 +72,8 @@ export async function GET(req: Request) {
     const where = {
       isActive: true,
       ...(category ? { categories: { some: { slug: category } } } : {}),
+      ...(minPrice && maxPrice ? { price: { gte: Number(minPrice), lte: Number(maxPrice) } } : {}),
+      ...(tags ? { tags: { hasSome: tags.split(',') } } : {}),
     };
 
     const products = await prisma.product.findMany({
@@ -77,9 +95,10 @@ export async function GET(req: Request) {
           select: {
             id: true,
             name: true,
-            slug: true
-          }
-        }
+            slug: true,
+            childCategories:true
+          },
+        },
       },
     });
 
@@ -87,11 +106,27 @@ export async function GET(req: Request) {
       where,
     });
 
+    const productCategories: Category[] = products.flatMap((product) => product.categories); 
+    const uniqueCategories: number[] = [...new Set(productCategories.map((category) => category.id))];
+    const pricesRangeBrut = products.flatMap((product)=>product.price)
+
+    const categories = await prisma.category.findMany({
+      where: {
+        id: { in: uniqueCategories },
+      },
+    });
+
+
     return NextResponse.json({
       currentPage: pageNumber,
       pageSize,
       total: totalCount,
       products,
+      categories,
+      prices: {
+        minPrice: Math.min(...pricesRangeBrut),
+        maxPrice: Math.max(...pricesRangeBrut),
+      }
     });
   } catch (error) {
     console.log('[PRODUCTS_GET]', error);

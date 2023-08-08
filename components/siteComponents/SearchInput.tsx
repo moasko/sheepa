@@ -51,14 +51,13 @@ const SearchInput: React.FC = () => {
 
   return (
     <AutoComplete
-    popupMatchSelectWidth={252}
-      style={{ width: "100%",borderWidth:1,borderColor:"orangered", borderRadius:9}}
+      popupMatchSelectWidth={252}
+      style={{ width: "100%", borderWidth: 1, height:40, borderColor: "orangered", borderRadius: 9 }}
       options={options}
       onSelect={onSelect}
       onSearch={handleSearch}
     >
-
-      <Input className='outline-none' style={{padding: 10,outline:"none"}} size="large" placeholder="Cherchez un produit, une marque ou une categorie" enterKeyHint="search" />
+      <Input className='outline-none' style={{ padding: 10, height:40, outline: "none" }} size="large" placeholder="Cherchez un produit, une marque ou une categorie" enterKeyHint="search" />
     </AutoComplete>
   );
 };
