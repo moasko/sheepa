@@ -2,7 +2,6 @@
 
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
@@ -16,6 +15,7 @@ import { Rate } from 'antd';
 import Head from 'next/head';
 import SingleProductLoading from '@/components/siteComponents/dynamicSections/loaders/SingleProductLoading';
 export const runtime = 'edge';
+
 
 export async function generateMetadata({
   params
@@ -42,19 +42,18 @@ export async function generateMetadata({
     },
     openGraph: url
       ? {
-          images: [
-            {
-              url,
-              width,
-              height,
-              alt
-            }
-          ]
-        }
+        images: [
+          {
+            url,
+            width,
+            height,
+            alt
+          }
+        ]
+      }
       : null
   };
 }
-
 
 interface ProductDetailsProps { }
 
@@ -63,13 +62,12 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
   const params = useParams()
   const { slug } = params
 
-
-
-
   const { data, isLoading, refetch } = useQuery<ProductProps>({
     queryKey: ['singleSlugProduct'],
     queryFn: () => getProduct(slug)
   })
+
+  console.log(data)
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -88,28 +86,21 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
     }
   };
 
-
-  useEffect(() => {
-    refetch()
-  }, [data])
-
   return (
     <>
-
+      <Head>
+        <title>{productJsonLd?.name}</title>
+        <meta name="description" content={productJsonLd?.description} />
+        <meta property="og:title" content={productJsonLd?.name} />
+        <meta property="og:description" content={productJsonLd?.description} />
+        {/* <meta property="og:image" content={product?.featuredImage?.url} /> */}
+      </Head>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <Head>
-        <title>iPhone 12 XS Max For Sale in Colorado - Big Discounts | Apple</title>
-        <meta
-          name="description"
-          content="Check out iPhone 12 XR Pro and iPhone 12 Pro Max. Visit your local store and for expert advice."
-          key="desc"
-        />
-      </Head>
       {
         isLoading ? <SingleProductLoading /> :
           <section className='row'>
@@ -121,16 +112,20 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
                     <div className="h-full flex flex-col space-y-2 mr-2">
                       {
-                        data?.images.map((image: ProductImageProps) => {
-                          return <Image
-                            key={image.id}
-                            width={110}
-                            height={110}
-                            alt=""
-                            src={image.imageUrl ?? "/product_placeholder.png"}
-                            className="aspect-square rounded object-cover"
-                          />
-                        })
+                        data?.images ? (
+                          data.images.map((image: ProductImageProps) => (
+                            <Image
+                              key={image.id}
+                              width={110}
+                              height={110}
+                              alt=""
+                              src={image.imageUrl ?? "/product_placeholder.png"}
+                              className="aspect-square rounded object-cover"
+                            />
+                          ))
+                        ) : (
+                          <p>No images available</p>
+                        )
                       }
                     </div>
 
@@ -138,7 +133,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                       height={560}
                       width={560}
                       alt="Les Paul"
-                      src={data?.images?.[0]?.imageUrl ?? "/product_placeholder.png"}
+                      src={data?.images?.at(0)?.imageUrl ?? "/product_placeholder.png"}
                       className="aspect-square w-full rounded-xl object-cover"
                     />
                   </div>

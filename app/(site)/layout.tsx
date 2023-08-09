@@ -1,7 +1,7 @@
-import AdminToolBar from "@/components/AdminToolBar";
 import Footer from "@/components/siteComponents/siteLayout/Footer"
 import Header from "@/components/siteComponents/siteLayout/Header"
-
+import AdminToolBar from "@/components/AdminToolBar";
+import { CartProvider } from "@/contexts/CartContext";
 
 export const metadata = {
     title: 'Zangochap',
@@ -15,12 +15,14 @@ export default function SiteLayout({
 }) {
 
     return (
-        <>
-            <AdminToolBar />
-            <Header />
-            {children}
-            <Footer />
-        </>
+        <CartProvider>
+            <>
+                <AdminToolBar />
+                <Header />
+                {children}
+                <Footer />
+            </>
+        </CartProvider>
 
     )
 }

@@ -13,10 +13,12 @@ import { AiOutlineUser } from "react-icons/ai"
 import { BiBox } from "react-icons/bi"
 import { LiaUserCheckSolid } from "react-icons/lia"
 import { isAuthentificated } from '@/lib/helpers/authHelper';
+import { useCartContext } from '@/contexts/CartContext';
 
 function Header() {
   const session = useSession()
 
+const {cartItems} = useCartContext()
 
   return (
     <header className='sticky top-0 max-h-[72px] z-10 bg-white p-[12px]  w-full shadow-[0_4px_4px_-4px_#0000001f]' >
@@ -107,7 +109,7 @@ function Header() {
 
               <div className="panier relative"> <Link href="/cart">
                 <SlBasket size={20} />
-                <div className='absolute border-[3px] bg-orange-500 w-5 h-5 flex justify-center items-center rounded-full text-white font-semibold bottom-1 left-4'><span>{0}</span></div>
+                <div className='absolute border-[3px] bg-orange-500 w-5 h-5 flex justify-center items-center rounded-full text-white font-semibold bottom-1 left-4'><span>{cartItems.length}</span></div>
               </Link>
               </div>
             </div>

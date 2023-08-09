@@ -16,7 +16,7 @@ interface ProductsSectionProps {
     linkTitle?: string
     category?: string
     limit?: number
-    size?:number
+    size?: number
 }
 
 const ProductsSection: FC<ProductsSectionProps> = ({
@@ -25,7 +25,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({
     link,
     category = "",
     limit = 6,
-    size=6
+    size = 6
 }) => {
     const { data, isLoading, refetch } = useQuery(['products', { category, limit }], () => getSectionsProducts({ category, limit }), {
         refetchOnMount: true,
@@ -55,7 +55,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({
                 {/* group crard header body */}
                 <div className="inline-grid grid-cols-2 lg:grid-cols-6 gap-1 p-2 w-full">
                     {isLoading ? (
-                        <ProductsLoading/>
+                        <ProductsLoading />
                     ) : (
                         data?.products.map((item: ProductProps, index: number) => (
                             <ProductCard key={index} product_data={item} />

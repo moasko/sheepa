@@ -113,7 +113,7 @@ const OrdersPage: FC<OrdersPageProps> = ({ }) => {
                                                 <div className='flex space-x-3 hover:bg-slate-100 p-2 rounded-lg cursor-pointer'>
                                                     <Image
                                                         className="rounded-md"
-                                                        src={product?.images?.[0]?.imageUrl ?? "/product_placeholder.png"}
+                                                        src={product?.images?.at(0)?.imageUrl ?? "/product_placeholder.png"}
                                                         width={70}
                                                         height={70}
                                                         alt="Product Image"

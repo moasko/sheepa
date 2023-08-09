@@ -23,7 +23,7 @@ const HomePage = () => {
 
       <ProductsSection
         showHeader={true}
-        category='montre-beeaa'
+        category='boutique'
         title={"Montres | Ofre Speciel"}
         limit={12}
       />

@@ -44,16 +44,18 @@ interface GetAllProductsProps {
   perPage?: number,
   page?: number,
   minPrice?: number,
-  maxPrice?: number
+  maxPrice?: number,
+  category?:string
 }
-export const getAllProducts = async ({ perPage, page, minPrice, maxPrice }: GetAllProductsProps) => {
+export const getAllProducts = async ({ perPage, page, minPrice, maxPrice,category }: GetAllProductsProps) => {
   try {
     const { data } = await axios.get(`${API_BASE_URL}/products`, {
       params: {
         perPage,
         page,
         maxPrice,
-        minPrice
+        minPrice,
+        category
       }
     });
     return data;

@@ -1,7 +1,7 @@
 import React from "react";
 
 import { BiBoltCircle } from "react-icons/bi";
-import { Button, Pane, Popover } from "evergreen-ui";
+import {Pane, Popover } from "evergreen-ui";
 import { FiChevronDown } from "react-icons/fi";
 import { MdOutlineLogout } from "react-icons/md";
 import { AiOutlineSetting, AiOutlineShop } from "react-icons/ai";
@@ -11,6 +11,7 @@ import Link from "next/link";
 
 import { signOut, useSession } from "next-auth/react";
 import { Avatar } from "@nextui-org/react";
+import { BASE_URL } from "@/lib/helpers/constants";
 
 function UserMenu() {
 
@@ -34,7 +35,7 @@ function UserMenu() {
             </div>
             <Link
               target={"_blank"}
-              href={"http://localhost:3000"}
+              href={BASE_URL}
               className="flex space-x-3 items-center p-2 rounded-md hover:bg-slate-200"
             >
               <AiOutlineShop color="#555d67" size={20} />
