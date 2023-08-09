@@ -1,12 +1,12 @@
 "use client";
 
-import type { Metadata } from 'next';
+import type { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ProductImageProps, ProductProps } from "@/lib/interfaces/modelsInterfaces"
 import { useParams } from 'next/navigation';
@@ -16,51 +16,52 @@ import Head from 'next/head';
 import SingleProductLoading from '@/components/siteComponents/dynamicSections/loaders/SingleProductLoading';
 export const runtime = 'edge';
 
+// type Props = {
+//   params: { slug: string }
+//   searchParams: { [key: string]: string | string[] | undefined }
+// }
 
-export async function generateMetadata({
-  params
-}: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const product = await getProduct(params.slug);
+// export async function generateMetadata({ params, searchParams }: Props,parent: ResolvingMetadata): Promise<Metadata> {
 
-  if (!product) return notFound();
+//   const {data}=useQuery(['productSeo'],()=>getProduct(params.slug))
 
-  const { url, width, height, altText: alt } = product.featuredImage || {};
-  const hide = !product.tags.includes("a");
+//   if (!data) return notFound();
 
-  return {
-    title: product.seo.title || product.title,
-    description: product.seo.description || product.description,
-    robots: {
-      index: hide,
-      follow: hide,
-      googleBot: {
-        index: hide,
-        follow: hide
-      }
-    },
-    openGraph: url
-      ? {
-        images: [
-          {
-            url,
-            width,
-            height,
-            alt
-          }
-        ]
-      }
-      : null
-  };
-}
+//   const { url, width, height, altText: alt } = data.featuredImage || {};
+//   const hide = !data.tags.includes("a");
+
+//   return {
+//     title: data.seo.title || data.title,
+//     description: data.seo.description || data.description,
+//     robots: {
+//       index: hide,
+//       follow: hide,
+//       googleBot: {
+//         index: hide,
+//         follow: hide
+//       }
+//     },
+//     openGraph: url
+//       ? {
+//         images: [
+//           {
+//             url,
+//             width,
+//             height,
+//             alt
+//           }
+//         ]
+//       }
+//       : null
+//   };
+// }
 
 interface ProductDetailsProps { }
 
 const ProductDetails: FC<ProductDetailsProps> = () => {
 
-  const params = useParams()
-  const { slug } = params
+  const param = useParams()
+  const { slug } = param
 
   const { data, isLoading, refetch } = useQuery<ProductProps>({
     queryKey: ['singleSlugProduct'],
