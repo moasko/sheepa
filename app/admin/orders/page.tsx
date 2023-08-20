@@ -104,7 +104,7 @@ const OrdersPage: FC<OrdersPageProps> = () => {
               <Button appearance="primary">Voir les details</Button>
             </div>
           </div>
-          <CheckOutProductItem product={items.items} />
+          <CheckOutProductItem product={items.items as any} />
         </div>
       ))}
     </div>

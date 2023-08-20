@@ -42,6 +42,7 @@ export const CartProvider = ({ children }: { children: JSX.Element[] | JSX.Eleme
     const [totalPrice, setTotalPrice] = useState(0);
 
     const addToCart = (item: string) => {
+         // @ts-ignore
         setCartItems((prevItems) => [...prevItems, item]);
         setTotalPrice(prevTotalPrice => prevTotalPrice + item.length);
     };

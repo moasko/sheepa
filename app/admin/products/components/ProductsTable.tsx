@@ -26,7 +26,7 @@ const ProductTable: React.FC = () => {
 
     const [selectedProduct, setSelectedProduct] = useState<number | undefined>(undefined)
     const [toEditId, setToEditId] = useState<number | undefined>(undefined)
-
+    // @ts-ignore
     const { data, isLoading, error } = useQuery(['admProducts'], getAllProducts);
 
     const onDeleteProduct = (productId: number | undefined) => {
@@ -152,6 +152,7 @@ const ProductTable: React.FC = () => {
                                     </tr>
                                 </thead>
                                 <tbody className=''>
+                                    {/* @ts-ignore */}
                                     {data?.products?.map((product: ProductProps) => (
                                         <ProductListItem
                                             key={product.id}

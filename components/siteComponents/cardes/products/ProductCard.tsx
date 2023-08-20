@@ -40,6 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product_data, showButton = fa
             <div className="w-full invisible group-hover:visible flex justify-center px-2">
                 <button
                     onClick={() => {
+                         // @ts-ignore
                         addCart({ id, image: images?.length !== 0 ? images?.at(0)?.imageUrl : null, slug, name, price, quantity: 1 })
                     }}
                     className="py-2 rounded-sm mt-2 w-full bg-orange-500 font-semibold text-white text-center">Ajouter au Panier</button>

@@ -9,7 +9,7 @@ interface CheckOutProductItemProps {
 }
 
 
-const CheckOutProductItem: FC<CheckOutProductItemProps> = ({ product }) => {
+const CheckOutProductItem: FC<CheckOutProductItemProps> = ({ product }:{product:OrderItems[]}) => {
     return (
         <div className='mt-5'>
             {
