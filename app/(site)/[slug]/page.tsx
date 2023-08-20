@@ -1,6 +1,6 @@
 "use client";
 
-import type { Metadata, ResolvingMetadata } from 'next';
+// import type { Metadata, ResolvingMetadata } from 'next';
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
@@ -18,27 +18,27 @@ type Props = {
   params: { slug: string }
   searchParams: { [key: string]: string | string[] | undefined }
 }
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+// export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
-  const { data } = useQuery(['productSeo'], () => getProduct(params.slug))
+//   const { data } = useQuery(['productSeo'], () => getProduct(params.slug))
 
-  if (!data)
-    return {
-      title: "Not Found",
-      description: "The page is not found",
-    };
+//   if (!data)
+//     return {
+//       title: "Not Found",
+//       description: "The page is not found",
+//     };
 
-  return {
-    title: "mozkdoo",
-    description: data?.description,
-    alternates: {
-      canonical: `/${data?.slug}`,
-      languages: {
-        "en-CA": `en-CA/${data?.slug}`,
-      },
-    },
-  };
-}
+//   return {
+//     title: "mozkdoo",
+//     description: data?.description,
+//     alternates: {
+//       canonical: `/${data?.slug}`,
+//       languages: {
+//         "en-CA": `en-CA/${data?.slug}`,
+//       },
+//     },
+//   };
+// }
 
 interface ProductDetailsProps { }
 
