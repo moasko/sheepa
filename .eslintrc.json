@@ -5,7 +5,9 @@
     },
     "extends": [
         "standard-with-typescript",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "eslint:recommended", "next",
+        "next", "prettier"
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
@@ -16,4 +18,5 @@
     ],
     "rules": {
     }
+
 }

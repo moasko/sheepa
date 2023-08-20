@@ -3,27 +3,40 @@ import Header from "@/components/siteComponents/siteLayout/Header"
 import AdminToolBar from "@/components/AdminToolBar";
 import { CartProvider } from "@/contexts/CartContext";
 
+const { SITE_NAME } = process.env;
+const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+  : 'http://localhost:3000';
+
 export const metadata = {
-    title: 'Zangochap',
-    description: 'Mieux s\'habiller à bas prix'
-}
+  metadataBase: new URL(baseUrl),
+  title: {
+    //   default: SITE_NAME!,
+    template: `%s | ${SITE_NAME}`
+  },
+  robots: {
+    follow: true,
+    index: true
+  }
+};
+
 
 export default function SiteLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode
+  children: React.ReactNode
 }) {
 
-    return (
-        <CartProvider>
-            <>
-                <AdminToolBar />
-                <Header />
-                {children}
-                <Footer />
-            </>
-        </CartProvider>
+  return (
+    <CartProvider>
+      <>
+        <AdminToolBar />
+        <Header />
+        {children}
+        <Footer />
+      </>
+    </CartProvider>
 
-    )
+  )
 }
 

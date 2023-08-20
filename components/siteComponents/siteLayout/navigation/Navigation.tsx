@@ -4,23 +4,17 @@
 import Image from 'next/image'
 import React from 'react'
 import { MdOutlineSupportAgent } from "react-icons/md"
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Carousel } from 'react-responsive-carousel';
 import { HiPhone } from "react-icons/hi"
 import { AiFillShop } from "react-icons/ai"
+import { Carousel } from 'antd';
+
 function Navigation() {
   return (
     <div className="row">
       <div className="col_16 flexer -rt">
-        <div className="row">
-          <div className="col_12">
-            <Carousel
-              autoPlay={true}
-              infiniteLoop={true}
-              animationHandler="fade"
-              swipeable={false}
-              showThumbs={false}
-              className='w-full'>
+        <div className="flex space-x-3 w-full">
+          <div className="lg:w-9/12 w-full">
+            <Carousel effect="fade" autoplay>
               <div className="flayer">
                 <Image fill src="/p1.jpg" alt="image" />
               </div>
@@ -30,7 +24,7 @@ function Navigation() {
             </Carousel>
 
           </div>
-          <div className="col_4">
+          <div className="w-3/12 hidden lg:block">
             <div className="asider">
               <div className="asidcardes asidinfo">
                 <a href="#" className="asidItem">

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { ProductProps } from '@/lib/interfaces/modelsInterfaces';
-import { useCartContext } from '@/contexts/CartContext';
+import { store } from '@/store';
 
 
 interface ProductCardProps {
@@ -12,8 +12,8 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product_data, showButton = false }) => {
-    const { cartItems, addToCart } = useCartContext()
 
+    const { addCart } = store()
 
     const { id, images, name, price, slug, reduction } = product_data;
     const placeholderImage = "/product_placeholder.png";
@@ -24,7 +24,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product_data, showButton = fa
         <article className="overflow-hidden group relative pb-2 hover:shadow-lg">
             <Link href={{ pathname: `/${slug}`, query: { slug: slug } }} as={{ pathname: `/${slug}` }}>
                 <div className="h-[185px] w-full relative">
-                    <Image sizes={imageSizes} fill blurDataURL={placeholderImage} src={imageSrc} alt="image" />
+                    <Image placeholder='blur' sizes={imageSizes} fill blurDataURL={placeholderImage} src={imageSrc} alt="image" />
                 </div>
                 <div className='p-1'>
                     <div className="product_name mb-2 line-clamp-1 text-[.75rem]">{name}</div>
@@ -40,8 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product_data, showButton = fa
             <div className="w-full invisible group-hover:visible flex justify-center px-2">
                 <button
                     onClick={() => {
-                        addToCart(JSON.stringify({ id, name, price }))
-                        console.log(cartItems)
+                        addCart({ id, image: images?.length !== 0 ? images?.at(0)?.imageUrl : null, slug, name, price, quantity: 1 })
                     }}
                     className="py-2 rounded-sm mt-2 w-full bg-orange-500 font-semibold text-white text-center">Ajouter au Panier</button>
             </div>

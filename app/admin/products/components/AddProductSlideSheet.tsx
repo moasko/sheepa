@@ -22,6 +22,7 @@ import { createProduct } from "@/services/products.sercices";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import notify from "@/lib/utils/notification";
 import TagsSelect from "@/components/TagsSelect";
+import ImageUpload from "@/components/ImageUpload";
 
 
 interface AddProductSlideSheetProps {
@@ -46,7 +47,8 @@ function AddProductSlideSheet({
     seoTitle: "",
     seoDescription: "",
     user: 1,
-    categories: ""
+    categories: "",
+    images: []
   };
 
 
@@ -64,8 +66,6 @@ function AddProductSlideSheet({
       [label]: value,
     }));
   };
-
-
 
   const productMutation = useMutation({
     mutationFn: createProduct,
@@ -117,9 +117,9 @@ function AddProductSlideSheet({
         <Pane>
           <Collapse.Group splitted>
             <Collapse title={<h5>Medias</h5>}>
-              <div className="mt-10 mb-10 p-5 rounded-lg bg-white border">
-                upload image place
-              </div>
+              <ImageUpload value={(res) => {
+               handleInputChange("images",res.map(im => ({ imageUrl: im.url })));
+              }} />
             </Collapse>
 
             <Collapse bordered title={<h5>Informations générales</h5>}>
@@ -311,7 +311,6 @@ function AddProductSlideSheet({
           <Button
             size="large"
             onClick={() => {
-              console.log(productData)
               productMutation.mutate(productData)
             }}
             iconBefore={productMutation.isLoading ? <Spinner /> : <SavedIcon />}

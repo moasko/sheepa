@@ -26,21 +26,23 @@ const CategiresHomePageList = ({ prop = 'default value' }: CategiresHomePageList
           isLoading ? null
             :
             <Carousel
-              show={8}
+              show={4}
               slide={2}
               transition={0.5}
+              swiping={true}
+              responsive={true}
               rightArrow={<div className='flex justify-center items-center'><div className=' bg-slate-800/40 rounded-full w-[40px] h-[40px] flex justify-center items-center'><MdKeyboardArrowRight color='white' /></div></div>}
               leftArrow={<div className='flex justify-center items-center'><div className=' bg-slate-800/40 rounded-full w-[40px] h-[40px] flex justify-center items-center'><MdKeyboardArrowLeft color='white' /></div></div>}
-              className='mt-2 mb-2 pt-3 pb-3'
+              className='mt-2 mb-2 space-x-4  pt-3 pb-3'
             >
               {
                 data?.map((category: CategoryProps) => {
                   return (
                     <Link href={`/shop/${category.slug}`}>
-                     <div className='bg-white hover:shadow-lg flex flex-col justify-center items-center hover:scale-105 rounded-lg transition-transform'>
-                      <Image alt='aa' src={"/WomenDresses23.png"} height={125} width={125} />
-                      <p className='m-[8px] text-center'>{category.name}</p>
-                    </div>
+                      <div className='bg-white hover:shadow-lg flex px-3 flex-col justify-center items-center hover:scale-105 rounded-lg transition-transform'>
+                        <Image alt='aa' src={"/WomenDresses23.png"} height={125} width={125} />
+                        <p className='m-[8px] text-center'>{category.name}</p>
+                      </div>
                     </Link>
                   )
                 })

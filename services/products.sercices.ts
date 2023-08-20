@@ -8,10 +8,6 @@ interface GetSectionsProducts {
   limit?: number;
 }
 
-
-
-
-
 export const getSectionsProducts = async ({
   category,
   limit = PRODUCTS_SECTION_DEFAULT_LIMITE,

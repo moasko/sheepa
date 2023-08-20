@@ -23,7 +23,7 @@ interface PriceRange {
 interface ProductsResProps {
     currentPage: number;
     total: number;
-    pageSize?:number;
+    pageSize?: number;
     products: ProductProps[];
     categories: CategoryProps[];
     prices: PriceRange;
@@ -39,7 +39,7 @@ const CategorieRes: FC<CategorieResProps> = () => {
     const [queryOptions, setQueryOptions] = useState({
         perPage: 4,
         page: 1,
-        category:slug
+        category: slug
     });
 
     const { data, isLoading, error } = useQuery<ProductsResProps>(
@@ -67,9 +67,9 @@ const CategorieRes: FC<CategorieResProps> = () => {
     };
 
     useEffect(() => {
-            queryClient.refetchQueries(['catalogProducts']);
-            console.log(data)
-    }, [range,queryOptions]);
+        queryClient.refetchQueries(['catalogProducts']);
+        console.log(data)
+    }, [range, queryOptions]);
 
     return (
         <div className="row">
@@ -137,7 +137,7 @@ const CategorieRes: FC<CategorieResProps> = () => {
                                 current={data?.currentPage}
                                 defaultCurrent={data?.currentPage}
                                 total={data?.total}
-                               pageSize={data?.pageSize}
+                                pageSize={data?.pageSize || 0}
                             />
                         </div>
                     </div>

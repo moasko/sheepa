@@ -1,60 +1,44 @@
 "use client";
 
 import type { Metadata, ResolvingMetadata } from 'next';
-import { notFound } from 'next/navigation';
-
 import ProductsSection from '@/components/siteComponents/dynamicSections/ProductsSection';
 import { getProduct } from '@/services/products.sercices';
 import Image from 'next/image';
-import { FC, useEffect, useState } from 'react';
+import { FC } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ProductImageProps, ProductProps } from "@/lib/interfaces/modelsInterfaces"
 import { useParams } from 'next/navigation';
 import { priceFormatter } from '@/lib/helpers/priceFormatter';
 import { Rate } from 'antd';
-import Head from 'next/head';
 import SingleProductLoading from '@/components/siteComponents/dynamicSections/loaders/SingleProductLoading';
 export const runtime = 'edge';
 
-// type Props = {
-//   params: { slug: string }
-//   searchParams: { [key: string]: string | string[] | undefined }
-// }
 
-// export async function generateMetadata({ params, searchParams }: Props,parent: ResolvingMetadata): Promise<Metadata> {
+type Props = {
+  params: { slug: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
-//   const {data}=useQuery(['productSeo'],()=>getProduct(params.slug))
+  const { data } = useQuery(['productSeo'], () => getProduct(params.slug))
 
-//   if (!data) return notFound();
+  if (!data)
+    return {
+      title: "Not Found",
+      description: "The page is not found",
+    };
 
-//   const { url, width, height, altText: alt } = data.featuredImage || {};
-//   const hide = !data.tags.includes("a");
-
-//   return {
-//     title: data.seo.title || data.title,
-//     description: data.seo.description || data.description,
-//     robots: {
-//       index: hide,
-//       follow: hide,
-//       googleBot: {
-//         index: hide,
-//         follow: hide
-//       }
-//     },
-//     openGraph: url
-//       ? {
-//         images: [
-//           {
-//             url,
-//             width,
-//             height,
-//             alt
-//           }
-//         ]
-//       }
-//       : null
-//   };
-// }
+  return {
+    title: "mozkdoo",
+    description: data?.description,
+    alternates: {
+      canonical: `/${data?.slug}`,
+      languages: {
+        "en-CA": `en-CA/${data?.slug}`,
+      },
+    },
+  };
+}
 
 interface ProductDetailsProps { }
 
@@ -67,8 +51,6 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
     queryKey: ['singleSlugProduct'],
     queryFn: () => getProduct(slug)
   })
-
-  console.log(data)
 
   const productJsonLd = {
     '@context': 'https://schema.org',
@@ -87,15 +69,11 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
     }
   };
 
+  const trustedHtml = data?.description as TrustedHTML
+
   return (
     <>
-      <Head>
-        <title>{productJsonLd?.name}</title>
-        <meta name="description" content={productJsonLd?.description} />
-        <meta property="og:title" content={productJsonLd?.name} />
-        <meta property="og:description" content={productJsonLd?.description} />
-        {/* <meta property="og:image" content={product?.featuredImage?.url} /> */}
-      </Head>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -108,8 +86,8 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
 
             <div className="relative mx-auto max-w-screen-xl card  py-8">
               <div className="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
-                  <div className='flex'>
+                <div className="grid lg:grid-cols-2 grid-cols-1  gap-4 ">
+                  <div className='flex flex-col-reverse lg:flex-row'>
 
                     <div className="h-full flex flex-col space-y-2 mr-2">
                       {
@@ -129,7 +107,6 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                         )
                       }
                     </div>
-
                     <Image
                       height={560}
                       width={560}
@@ -137,6 +114,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                       src={data?.images?.at(0)?.imageUrl ?? "/product_placeholder.png"}
                       className="aspect-square w-full rounded-xl object-cover"
                     />
+
                   </div>
                 </div>
 
@@ -161,11 +139,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
                   </div>
 
                   <div className="mt-4">
-                    <div className="prose max-w-none">
-                      <p>{data?.description}</p>
-                    </div>
-
-                    <button className="mt-2 text-sm font-medium underline">Read More</button>
+                    <div dangerouslySetInnerHTML={{ __html: trustedHtml }} className="prose max-w-none" />
                   </div>
 
                   <form className="mt-8">
@@ -307,9 +281,7 @@ const ProductDetails: FC<ProductDetailsProps> = () => {
             </div>
             <div className='row'>
               <div className='card'>
-                <div className='p-3'>
-                  {data?.description}
-                </div>
+                <div dangerouslySetInnerHTML={{ __html: trustedHtml}} className='p-3' />
               </div>
             </div>
 

@@ -15,7 +15,12 @@ const productSchema = z.object({
   seoTitle: z.string(),
   seoDescription: z.string(),
   user: z.number(),
-  categories: z.string()
+  categories: z.string(),
+  images: z.array(
+    z.object({
+      imageUrl: z.string(), 
+    })
+  ),
 });
 
 interface Category {
@@ -35,15 +40,21 @@ export async function POST(req: Request) {
     const product = await prisma.product.create({
       data: {
         ...productData,
-        user: {
+        user: { 
           connect: {
             id: productData.user,
           },
         },
         categories: {
           connect: formatCategories
-        }
+        },
+        images: {
+          create: productData.images.map(image => ({ imageUrl: image.imageUrl })),
+        },
       },
+      include:{
+        images:true
+      }
     });
 
     return NextResponse.json(product);

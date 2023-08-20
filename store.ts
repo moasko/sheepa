@@ -1,18 +1,73 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import productsSlice from "./redux/slices/products/productsSlice";
-import editProductSlice from "./redux/slices/products/editProductSlice";
+import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
 
-// category slices
-import categorySlice from "./redux/slices/category/categorySlice";
+type CartItemType = {
+  id: number,
+  image: string,
+  name: string,
+  price: number,
+  quantity: number,
+  slug: string,
+}
 
-const combineReducer = combineReducers({
-  products: productsSlice,
-  edit: editProductSlice,
-  category: categorySlice,
-});
+type StoreState = {
+  cart: CartItemType[],
+  searchInput: string
+}
 
-const store = configureStore({
-  reducer: combineReducer,
-});
+type Actions = {
+  addCart: (cart: CartItemType) => void,
+  incrementQuantity: (id: number) => void,
+  decrementQuantity: (id: number) => void,
+  deleteCart: (id: number) => void,
+  resetCart: () => void,
+}
 
-export default store;
+const initalState: StoreState = {
+  cart: [],
+  searchInput: ''
+}
+
+
+export const store = create(persist<StoreState & Actions>((set, get) => ({
+  ...initalState,
+  addCart: (cartItem: CartItemType) =>
+    set((state) => {
+      const existingItemIndex = state.cart.findIndex(item => item.id === cartItem.id);
+
+      if (existingItemIndex !== -1) {
+        const updatedCart = [...state.cart];
+        updatedCart[existingItemIndex].quantity += 1;
+        return { cart: updatedCart };
+      } else {
+        return { cart: [...state.cart, cartItem] };
+      }
+    }),
+  incrementQuantity: (id) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      ),
+    })),
+
+  decrementQuantity: (id) =>
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.id === id && item.quantity > 0
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      ),
+    })),
+  deleteCart: (id) =>
+    set((state) => ({ cart: state.cart.filter((item) => item.id !== id) })),
+
+  resetCart: () => set(() => ({ cart: [] }))
+
+}),
+  {
+    name: 'cart',
+    storage: createJSONStorage(() => localStorage),
+  }
+)
+
+);

@@ -2,9 +2,8 @@
 
 import AuthProviders from '@/providers/AuthProvider'
 import './globals.css'
-import { Poppins, Roboto } from 'next/font/google'
+import { Roboto } from 'next/font/google'
 import { QueryClientProvider,  QueryClient, } from '@tanstack/react-query';
-import { Metadata } from 'next'
 
 
 const poppins = Roboto({
@@ -12,10 +11,6 @@ const poppins = Roboto({
   weight: "400"
 })
 
-// export const metadata:Metadata = {
-//   title: 'Sheepa',
-//   description: 'online commerce cms',
-// }
 
 const queryClient = new QueryClient()
 
@@ -25,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className="relative">
         <QueryClientProvider client={queryClient} >
           <AuthProviders>
