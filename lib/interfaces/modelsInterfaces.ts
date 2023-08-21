@@ -75,12 +75,12 @@ export interface ProductProps {
     isActive: boolean;
     sku?: string;
     quantity?: number;
-    description?: string;
+    description?: string | TrustedHTML;
     seoTitle?: string;
     seoDescription?: string;
     images?: ProductImageProps[];
     variants?: ProductVariantProps;
-    categories?: CategoryProps;
+    categories?: string;
     Tags?: TagProps;
     orders?: OrderProps;
     user?: number;
@@ -169,6 +169,23 @@ export interface ProductReviewProps {
     updatedAt: Date;
 }
 
+export interface OrderItems {
+    id: number;
+    orderId: number
+    product:
+    {
+        name: string,
+        price: number,
+        images: {
+            imageUrl: string
+        }[]
+    },
+    productId: number
+    quantity: number
+    totalPrice: number
+    unitPrice: number
+}
+
 export interface OrderProps {
     id: number;
     createdAt: Date;
@@ -183,6 +200,7 @@ export interface OrderProps {
     supPhone?: String;
     address: String;
     code?: String;
+    items: OrderItems
 }
 
 export interface PageProps {
@@ -192,4 +210,21 @@ export interface PageProps {
     content: string;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface CheckOutDataItemsProps {
+    quantity: number;
+    unitPrice: number;
+    totalPrice: number;
+    productId: number;
+}
+
+export interface CheckOutDataProps {
+    code: string,
+    name: string;
+    phone: string;
+    supPhone: string;
+    address: string;
+    total: number;
+    items: CheckOutDataItemsProps[];
 }

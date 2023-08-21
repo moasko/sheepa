@@ -1,82 +1,50 @@
 "use client";
 
-import { CldUploadWidget } from 'next-cloudinary';
-import { useEffect, useState } from 'react';
+import { CldUploadButton } from "next-cloudinary"; // Assurez-vous que les types de next-cloudinary sont correctement importés
+import { useEffect, useState } from "react";
 
-
-import Image from 'next/image';
-import { Button } from 'evergreen-ui';
-import { BiTrash } from 'react-icons/bi';
-import { BsImages } from 'react-icons/bs';
-
-
-
-interface ImageUploadProps {
-  disabled?: boolean;
-  onChange: (value: string) => void;
-  onRemove: (value: string) => void;
-  value: string[];
+interface ImageInfo {
+  url: string;
+  // Ajoutez d'autres propriétés d'informations d'image si nécessaire
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
-  disabled,
-  onChange,
-  onRemove,
-  value
-}) => {
-  const [isMounted, setIsMounted] = useState(false);
+interface UploadButtonProps {
+  value: (value: ImageInfo[]) => void;
+}
+
+export default function UploadButton({ value }: UploadButtonProps) {
+  const [images, setImages] = useState<ImageInfo[]>([]);
 
   useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    value(images);
+  }, [images]);
 
-  const onUpload = (result: any) => {
-    onChange(result.info.secure_url);
-  };
-
-  if (!isMounted) {
-    return null;
-  }
-
-  return ( 
-    <div>
-      <div className="mb-4 flex items-center gap-4">
-        {value.map((url) => (
-          <div key={url} className="relative w-[200px] h-[200px] rounded-md overflow-hidden">
-            <div className="z-10 absolute top-2 right-2">
-              <Button type="button" onClick={() => onRemove(url)}>
-                <BiTrash className="h-4 w-4" />
-              </Button>
-            </div>
-            <Image
-              fill
-              className="object-cover"
-              alt="Image"
-              src={url}
+  return (
+    <div className="flex items-center space-x-4">
+      <div className="w-[100px] h-[100px] border rounded border-dashed">
+        <CldUploadButton
+          onUpload={(result: any) => {
+            const newImages = [...images, { url: result.info.secure_url }];
+            setImages(newImages);
+            value(newImages);
+          }}
+          uploadPreset="y4hxh3wh"
+        >
+          Upload Image
+        </CldUploadButton>
+      </div>
+      <div className="flex space-x-4">
+        {images.map((imageInfo, index) => (
+          <div className="overflow-hidden rounded border" key={index}>
+            <img
+              width={"100px"}
+              height={"100px"}
+              src={imageInfo.url}
+              alt={`Uploaded ${index}`}
             />
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset="dmnngf6ka">
-        {({ open }) => {
-          const onClick = () => {
-            open();
-          };
-
-          return (
-            <Button 
-              type="button" 
-              disabled={disabled} 
-              onClick={onClick}
-            >
-              <BsImages className="h-4 w-4 mr-2" />
-              Upload an Image
-            </Button>
-          );
-        }}
-      </CldUploadWidget>
     </div>
   );
 }
- 
-export default ImageUpload;

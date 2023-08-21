@@ -17,10 +17,12 @@ import {
 import slugify from "@/lib/utils/slugify";
 import { Collapse } from "@nextui-org/react";
 import DescriptionInput from "./DescriptionInput";
-import { ProductProps } from "@/lib/interfaces/modelsInterfaces";
+import { ProductProps, CategoryProps } from "@/lib/interfaces/modelsInterfaces";
 import { createProduct } from "@/services/products.sercices";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import notify from "@/lib/utils/notification";
+import TagsSelect from "@/components/TagsSelect";
+import ImageUpload from "@/components/ImageUpload";
 
 
 interface AddProductSlideSheetProps {
@@ -45,12 +47,14 @@ function AddProductSlideSheet({
     seoTitle: "",
     seoDescription: "",
     user: 1,
+    categories: "",
+    images: []
   };
 
 
   const [productData, setProductData] = useState<ProductProps>(initialState);
   const queryClient = useQueryClient()
-  
+
 
   useEffect(() => {
     setProductData(initialState);
@@ -62,8 +66,6 @@ function AddProductSlideSheet({
       [label]: value,
     }));
   };
-
-
 
   const productMutation = useMutation({
     mutationFn: createProduct,
@@ -77,10 +79,9 @@ function AddProductSlideSheet({
       })
     },
     onError: (error: any) => {
-      console.log(error);
+    console.log("error:", error)
     }
   });
-
 
 
   useEffect(() => {
@@ -101,7 +102,7 @@ function AddProductSlideSheet({
         }}
       >
         {
-          productMutation.isError ? <div className="w-full transition-all bg-red-600 text-white">{JSON.stringify(productMutation.error)}</div> : null
+          productMutation.isError ? <div className="w-full transition-all  bg-red-600 text-white">{JSON.stringify(productMutation.error)}</div> : null
         }
 
         <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
@@ -116,9 +117,9 @@ function AddProductSlideSheet({
         <Pane>
           <Collapse.Group splitted>
             <Collapse title={<h5>Medias</h5>}>
-              <div className="mt-10 mb-10 p-5 rounded-lg bg-white border">
-                upload image place
-              </div>
+              <ImageUpload value={(res) => {
+               handleInputChange("images",res.map(im => ({ imageUrl: im.url })));
+              }} />
             </Collapse>
 
             <Collapse bordered title={<h5>Informations générales</h5>}>
@@ -168,6 +169,16 @@ function AddProductSlideSheet({
                   />
                 </div>
 
+                {/* <div>
+                  <CategoryTreeSelector onChange={(value) => {
+                    console.log(value)
+                  }} />
+                </div> */}
+                <div className="my-5">
+                  <TagsSelect onChange={(e) => {
+                    handleInputChange("categories", e)
+                  }} />
+                </div>
                 <div>
                   <span className="text-sm font-semibold block mb-3">
                     Description
@@ -299,9 +310,8 @@ function AddProductSlideSheet({
           </Button>
           <Button
             size="large"
-            onClick={() =>{
-              console.log(productData)
-               productMutation.mutate(productData)
+            onClick={() => {
+              productMutation.mutate(productData)
             }}
             iconBefore={productMutation.isLoading ? <Spinner /> : <SavedIcon />}
             appearance="minimal"

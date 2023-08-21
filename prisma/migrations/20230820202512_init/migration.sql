@@ -83,7 +83,7 @@ CREATE TABLE `Product` (
     `isFeatured` BOOLEAN NOT NULL DEFAULT false,
     `isActive` BOOLEAN NOT NULL DEFAULT true,
     `sku` VARCHAR(191) NULL,
-    `quantity` INTEGER NOT NULL,
+    `quantity` INTEGER NULL,
     `description` VARCHAR(14000) NULL,
     `seoTitle` VARCHAR(191) NULL,
     `seoDescription` VARCHAR(191) NULL,
@@ -117,7 +117,7 @@ CREATE TABLE `ProductVariant` (
 -- CreateTable
 CREATE TABLE `ProductImage` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `productId` INTEGER NOT NULL,
+    `productId` INTEGER NULL,
     `alt` VARCHAR(191) NULL,
     `variantId` INTEGER NULL,
     `imageUrl` VARCHAR(191) NOT NULL,
@@ -184,7 +184,7 @@ CREATE TABLE `ProductReview` (
 CREATE TABLE `Order` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `userId` INTEGER NOT NULL,
+    `userId` INTEGER NULL,
     `total` INTEGER NULL,
     `status` VARCHAR(191) NOT NULL DEFAULT 'pending',
     `paymentId` VARCHAR(191) NULL,
@@ -194,6 +194,19 @@ CREATE TABLE `Order` (
     `address` VARCHAR(191) NULL,
     `code` VARCHAR(191) NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `OrderItem` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `orderId` INTEGER NOT NULL,
+    `productId` INTEGER NOT NULL,
+    `quantity` INTEGER NOT NULL,
+    `unitPrice` DOUBLE NOT NULL,
+    `totalPrice` DOUBLE NOT NULL,
+
+    UNIQUE INDEX `OrderItem_orderId_productId_key`(`orderId`, `productId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -225,15 +238,6 @@ CREATE TABLE `_CategoryToProduct` (
 
     UNIQUE INDEX `_CategoryToProduct_AB_unique`(`A`, `B`),
     INDEX `_CategoryToProduct_B_index`(`B`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
-CREATE TABLE `_OrderProducts` (
-    `A` INTEGER NOT NULL,
-    `B` INTEGER NOT NULL,
-
-    UNIQUE INDEX `_OrderProducts_AB_unique`(`A`, `B`),
-    INDEX `_OrderProducts_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- AddForeignKey
@@ -270,6 +274,12 @@ ALTER TABLE `ProductReview` ADD CONSTRAINT `ProductReview_userId_fkey` FOREIGN K
 ALTER TABLE `Order` ADD CONSTRAINT `Order_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `OrderItem` ADD CONSTRAINT `OrderItem_orderId_fkey` FOREIGN KEY (`orderId`) REFERENCES `Order`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `OrderItem` ADD CONSTRAINT `OrderItem_productId_fkey` FOREIGN KEY (`productId`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `_ProductToTag` ADD CONSTRAINT `_ProductToTag_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -280,9 +290,3 @@ ALTER TABLE `_CategoryToProduct` ADD CONSTRAINT `_CategoryToProduct_A_fkey` FORE
 
 -- AddForeignKey
 ALTER TABLE `_CategoryToProduct` ADD CONSTRAINT `_CategoryToProduct_B_fkey` FOREIGN KEY (`B`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_OrderProducts` ADD CONSTRAINT `_OrderProducts_A_fkey` FOREIGN KEY (`A`) REFERENCES `Order`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `_OrderProducts` ADD CONSTRAINT `_OrderProducts_B_fkey` FOREIGN KEY (`B`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

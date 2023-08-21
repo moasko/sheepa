@@ -14,19 +14,20 @@ interface ProductsSectionProps {
     title?: JSX.Element[] | JSX.Element | string,
     link?: string
     linkTitle?: string
-    headerBgColor?: string,
     category?: string
+    limit?: number
+    size?: number
 }
 
 const ProductsSection: FC<ProductsSectionProps> = ({
     showHeader = false,
     title,
     link,
-    linkTitle = "VOIR PLUS",
-    headerBgColor = "#00ff00",
-    category = ""
+    category = "",
+    limit = 6,
+    size = 6
 }) => {
-    const { data, isLoading, refetch } = useQuery(['products', { category }], () => getSectionsProducts({ category }), {
+    const { data, isLoading, refetch } = useQuery(['products', { category, limit }], () => getSectionsProducts({ category, limit }), {
         refetchOnMount: true,
         refetchOnWindowFocus: false,
         refetchOnReconnect: false,
@@ -38,21 +39,21 @@ const ProductsSection: FC<ProductsSectionProps> = ({
     }, [category]);
 
     return (
-        <div className='row w-full'>
-            <div className='bg-white w-full shadow overflow-hidden rounded-[4px]'>
+        <section className='row w-full'>
+            <div className='bg-white w-full shadow-[0_2px_5px_0_#0000000d] overflow-hidden'>
                 {/* group crard header Dive */}
                 {showHeader && (
-                    <div className={`bg-${headerBgColor} w-full flex justify-between items-center px-4 py-2`}>
-                        {title}
+                    <div className="w-full flex justify-between items-center px-4 py-2">
+                        <h2 className='text-black font-semibold text-[1.25rem]'>{title}</h2>
                         <div className='flex space-x-1 items-center'>
-                            {link && <Link className='text-white' href={link}>{linkTitle}</Link>}
-                            <BiChevronRight size={20} color='white' />
+                            <Link className='uppercase text-[orangered]' href={"/"}>{"Voir plus"}</Link>
+                            <BiChevronRight color='orangered' size={20} />
                         </div>
                     </div>
                 )}
 
                 {/* group crard header body */}
-                <div className={`inline-grid grid-cols-6 gap-1 p-2 w-full border`}>
+                <div className="inline-grid grid-cols-2 lg:grid-cols-6 gap-1 p-2 w-full">
                     {isLoading ? (
                         <ProductsLoading />
                     ) : (
@@ -62,7 +63,7 @@ const ProductsSection: FC<ProductsSectionProps> = ({
                     )}
                 </div>
             </div>
-        </div>
+        </section>
     );
 };
 

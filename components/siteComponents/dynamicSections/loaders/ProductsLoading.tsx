@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import type { FC } from 'react';
 
-interface ProductsLoadingProps {}
+interface ProductsLoadingProps {
+    limite?:number
+}
 
-const ProductsLoading: FC<ProductsLoadingProps> = () => {
+const ProductsLoading: FC<ProductsLoadingProps> = ({limite=12}) => {
     return (
         <>
-            {[...Array(12)].map((_, key) => {
+            {[...Array(limite)].map((_, key) => {
                 return (
                     <div key={key} className="product-cards animate-pulse group rounded overflow-hidden border border-gray-200">
                         <div>

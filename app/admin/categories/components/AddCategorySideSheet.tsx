@@ -6,9 +6,9 @@ import notify from '@/lib/utils/notification';
 import { Collapse } from "@nextui-org/react";
 import { CategoryProps } from '@/lib/interfaces/modelsInterfaces';
 import slugify from '@/lib/utils/slugify';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCategory } from '@/services/categories.services';
-
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createCategory, getAllCategories } from '@/services/categories.services';
+import { Select, Space } from 'antd';
 
 interface AddCategorySideSheetProps {
     isShown: boolean;
@@ -36,6 +36,14 @@ const AddCategorySideSheet: FC<AddCategorySideSheetProps> = ({ isShown, onClose 
             [label]: value,
         }));
     };
+
+    const { data, isLoading, error } = useQuery<CategoryProps[]>(["admsCategorySelect"], () =>
+        getAllCategories()
+    );
+
+    let allOptions = data?.map((category: CategoryProps) => {
+        return { label: category.name, value: category.id };
+    }) || [];
 
     const categoryMutation = useMutation({
         mutationFn: createCategory,
@@ -72,7 +80,8 @@ const AddCategorySideSheet: FC<AddCategorySideSheetProps> = ({ isShown, onClose 
                     display: "flex",
                     flex: "1",
                     flexDirection: "column",
-                    height: "100%"
+                    height: "100%",
+                    position: "relative"
                 }}
             >
                 <Pane zIndex={1} flexShrink={0} elevation={0} backgroundColor="white">
@@ -93,6 +102,19 @@ const AddCategorySideSheet: FC<AddCategorySideSheetProps> = ({ isShown, onClose 
                                 label="Nom"
                                 placeholder="Nom du produit"
                                 inputHeight={40}
+                            />
+                        </div>
+                    </Pane>
+
+                    <Pane paddingX={20}>
+                        <div>
+                            <Select
+                                size='large'
+                                style={{ width: "100%" }}
+                                placeholder="Selectioner une categorie"
+                                defaultValue={1}
+                                onChange={(options) => handleInputChange("parentId", options)}
+                                options={allOptions}
                             />
                         </div>
                     </Pane>
@@ -213,7 +235,7 @@ const AddCategorySideSheet: FC<AddCategorySideSheetProps> = ({ isShown, onClose 
 
 
 
-                <div className="w-full sticky bottom-0 space-x-5 bg-white px-5 py-6 shadow-[0px_-9px_26px_0px_#e2e8f0] flex items-center justify-end">
+                <div className="w-full absolute bottom-0 space-x-5 bg-white px-5 py-6 shadow-[0px_-9px_26px_0px_#e2e8f0] flex items-center justify-end">
                     <Button size="large">
                         Anuler
                     </Button>
