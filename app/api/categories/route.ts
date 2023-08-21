@@ -1,4 +1,3 @@
-import { BASE_URL } from "@/lib/helpers/constants";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 

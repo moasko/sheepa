@@ -32,14 +32,14 @@ function UserMenu() {
               <BiBoltCircle color="#555d67" size={20} />
               <span className="text-[#555d67]">Dashboard</span>
             </div>
-            <Link
+            {/* <Link
               target={"_blank"}
               href={"/"}
               className="flex space-x-3 items-center p-2 rounded-md hover:bg-slate-200"
             >
               <AiOutlineShop color="#555d67" size={20} />
               <span className="text-[#555d67]">Boutique</span>
-            </Link>
+            </Link> */}
 
             <div className="flex space-x-3 items-center p-2 rounded-md hover:bg-slate-200">
               <BsCodeSlash color="#555d67" size={20} />
