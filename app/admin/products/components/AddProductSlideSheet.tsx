@@ -79,7 +79,7 @@ function AddProductSlideSheet({
       })
     },
     onError: (error: any) => {
-      console.log(error);
+    console.log("error:", error)
     }
   });
 
